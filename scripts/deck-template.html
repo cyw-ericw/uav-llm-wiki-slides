@@ -89,9 +89,17 @@ aside .brand::before{content:"✦";position:absolute;left:0;top:2px;width:25px;h
 @media(max-width:420px){.frame{padding-top:32px}.frame::before{height:228px}.frame .lead{margin-bottom:54px}.nav small{display:none}.nav button{padding:9px 13px}.top{gap:7px}.chapter{font-size:11px;padding:4px 8px}}
 @media(prefers-reduced-motion:reduce){.contents a,.row,.nav button,.track i{transition:none!important}}
 @media print{.frame{break-after:page;padding-top:25px}.frame::before{print-color-adjust:exact}.hero-art{position:absolute;right:0;top:10px}.rows{grid-template-columns:repeat(3,minmax(0,1fr))}.row{min-height:auto}}
+/* Accessible homepage links; maintain fixed controls and the existing presentation layout. */
+aside a.brand.home-link{display:block;width:fit-content;text-decoration:none;cursor:pointer;border-radius:6px}
+aside a.brand.home-link:hover{color:#b7ed80}
+aside a.brand.home-link:focus-visible{outline:3px solid #b7ed80;outline-offset:6px}
+.mobile-home{display:none}
+@media(max-width:900px){.top{flex-wrap:wrap}.mobile-home{display:inline-flex;gap:.25em;align-items:center;white-space:nowrap;color:#e5efeb;text-decoration:none;font-size:13px;font-weight:750;letter-spacing:.035em;padding:7px 10px;border:1px solid #51655d;background:#243430;border-radius:5px}.mobile-home span{color:#b7ed80}.mobile-home:hover{background:#34483d;color:white}}
+@media(max-width:420px){.mobile-home{font-size:12px;padding:6px 8px}.mobile{max-width:100%;flex:1 1 132px}}
+@media(prefers-reduced-motion:reduce){aside a.brand.home-link,.mobile-home{transition:none!important}}
 @@V3CSS@@
-</style></head><body><div class="app"><aside aria-label="課程目錄"><p class="brand">無人機實驗室</p><p class="edition">UAV · 入門教學手冊</p><nav class="contents" aria-label="跳到指定頁">@@INDEX@@</nav></aside>
-<main class="stage"><div class="top"><span class="course">實驗室新人課程</span><select class="mobile" aria-label="投影片目錄">@@OPTIONS@@</select><span class="chapter"></span><span class="counter" aria-live="polite"></span></div><div class="track" aria-hidden="true"><i></i></div>
+</style></head><body><div class="app"><aside aria-label="課程目錄"><a class="brand home-link" href="https://cyw-ericw.github.io/uav-llm-wiki-slides/" aria-label="無人機實驗室，返回網站首頁" title="返回網站首頁">無人機實驗室</a><p class="edition">UAV · 入門教學手冊</p><nav class="contents" aria-label="跳到指定頁">@@INDEX@@</nav></aside>
+<main class="stage"><div class="top"><span class="course">實驗室新人課程</span><a class="mobile-home" href="https://cyw-ericw.github.io/uav-llm-wiki-slides/" aria-label="UAV LAB Wiki，返回網站首頁" title="返回網站首頁">UAV LAB <span>/ Wiki</span></a><select class="mobile" aria-label="投影片目錄">@@OPTIONS@@</select><span class="chapter"></span><span class="counter" aria-live="polite"></span></div><div class="track" aria-hidden="true"><i></i></div>
 @@SLIDES@@
 <nav class="nav" aria-label="換頁"><button id="prev" type="button">← 上一頁</button><small>← → 換頁　·　Home / End 首末頁</small><button id="next" type="button">下一頁 →</button></nav></main></div>
 <script>
