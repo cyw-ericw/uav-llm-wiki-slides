@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "sha256": "6ec3c410f02df8902e7e845aac15f0ef4f477218a816254bbed8380a422c93fc",
+  "slides": 11,
+  "bodies": 34,
+  "questions": 11,
+  "official_link_occurrences": 66,
+  "unique_official_urls": 8,
+  "source_map_links": 178,
+  "external_verification": "Canonical URL compared to the documents actually opened during source review; no live HTTP status probe in this script.",
+  "errors": []
+}

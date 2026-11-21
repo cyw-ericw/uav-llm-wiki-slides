@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "generated_at_taipei": "2026-11-21T14:45:08+08:00",
+  "source_count": 8,
+  "source_ids": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08"
+  ],
+  "source_origin": "verified_official_document_summaries_not_full_text",
+  "concept_pages_count": 5,
+  "output_source_cards": [
+    "wiki/sources/S01.md",
+    "wiki/sources/S02.md",
+    "wiki/sources/S03.md",
+    "wiki/sources/S04.md",
+    "wiki/sources/S05.md",
+    "wiki/sources/S06.md",
+    "wiki/sources/S07.md",
+    "wiki/sources/S08.md"
+  ],
+  "note": "PASS 僅表示來源卡生成成功；不等於 HTML 簡報已完成或內容經獨立審查。"
+}

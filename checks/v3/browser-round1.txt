@@ -1,0 +1,14 @@
+FAIL | assertions 1203 | errors 7
+1440×900 FAIL | nav max Δ 15.00 px | horizontal overflow 0 px | minimum bottom clearance 34.9 px
+1024×768 FAIL | nav max Δ 15.00 px | horizontal overflow 0 px | minimum bottom clearance 34.8 px
+768×1024 FAIL | nav max Δ 15.00 px | horizontal overflow 0 px | minimum bottom clearance 41.4 px
+390×844 FAIL | nav max Δ 0.53 px | horizontal overflow 0 px | minimum bottom clearance 42.7 px
+320×568 FAIL | nav max Δ 0.53 px | horizontal overflow 0 px | minimum bottom clearance 42.8 px
+普通動畫 0.16s；強制啟用減少動態 CSS 分支後 none；Blob/CSP 下資產請求 0。
+1440 nav Δ 15
+1024 nav Δ 15
+768 nav Δ 15
+390 nav Δ 0.53125
+320 clipped p06 TH
+320 clipped p06 TH
+320 nav Δ 0.53125

@@ -1,0 +1,79 @@
+{
+  "target": "fixed viewport navigation coordinates in 11-page HTML deck",
+  "tool": "headless Chromium (Playwright, file content in browser)",
+  "sha256": "17d75fb9460c4fca84258721f62c6cbd29ccb4de0825bf78fcd5c7a13738187b",
+  "total_page_clicks": 100,
+  "results": {
+    "1440x900": {
+      "page_clicks": 20,
+      "button_coordinates_stable": true,
+      "expansion_stable": true,
+      "horizontal_overflow": [],
+      "nav_rect": [
+        302.390625,
+        834.203125,
+        1137.609375,
+        65.796875
+      ],
+      "errors": [],
+      "status": "PASS"
+    },
+    "1024x768": {
+      "page_clicks": 20,
+      "button_coordinates_stable": true,
+      "expansion_stable": true,
+      "horizontal_overflow": [],
+      "nav_rect": [
+        220,
+        702.203125,
+        804,
+        65.796875
+      ],
+      "errors": [],
+      "status": "PASS"
+    },
+    "768x1024": {
+      "page_clicks": 20,
+      "button_coordinates_stable": true,
+      "expansion_stable": true,
+      "horizontal_overflow": [],
+      "nav_rect": [
+        0,
+        962.203125,
+        768,
+        61.796875
+      ],
+      "errors": [],
+      "status": "PASS"
+    },
+    "390x844": {
+      "page_clicks": 20,
+      "button_coordinates_stable": true,
+      "expansion_stable": true,
+      "horizontal_overflow": [],
+      "nav_rect": [
+        0,
+        782.203125,
+        390,
+        61.796875
+      ],
+      "errors": [],
+      "status": "PASS"
+    },
+    "320x568": {
+      "page_clicks": 20,
+      "button_coordinates_stable": true,
+      "expansion_stable": true,
+      "horizontal_overflow": [],
+      "nav_rect": [
+        0,
+        506.203125,
+        320,
+        61.796875
+      ],
+      "errors": [],
+      "status": "PASS"
+    }
+  },
+  "status": "PASS"
+}

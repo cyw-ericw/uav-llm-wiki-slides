@@ -1,0 +1,24 @@
+{
+  "checked_at_taipei": "2026-11-21T14:45:09+08:00",
+  "status": "PASS",
+  "source_count": 8,
+  "concept_count": 5,
+  "checks": {
+    "at_least_five_sources": true,
+    "unique_source_ids": true,
+    "official_source_urls": true,
+    "source_facts_and_sections": true,
+    "generated_source_files": true,
+    "wiki_index": true,
+    "concept_wiki_links_resolve": true,
+    "concept_pages_at_least_five": true,
+    "outline_draft_exists": true
+  },
+  "unresolved_concept_links": [],
+  "limitations": [
+    "只檢查來源卡生成與 Wiki 結構",
+    "未執行獨立事實忠實度審查",
+    "未生成或驗證 HTML 簡報",
+    "未部署 GitHub Pages"
+  ]
+}

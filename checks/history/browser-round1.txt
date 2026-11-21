@@ -1,0 +1,37 @@
+FAIL
+1440×900 FAIL | pages 11 | max height closed/open 900/900 | max x overflow closed/open 0/0
+1024×768 FAIL | pages 11 | max height closed/open 768/867 | max x overflow closed/open 0/0
+768×1024 FAIL | pages 11 | max height closed/open 1024/1024 | max x overflow closed/open 0/0
+390×844 FAIL | pages 11 | max height closed/open 844/1218 | max x overflow closed/open 0/0
+320×568 FAIL | pages 11 | max height closed/open 939/1416 | max x overflow closed/open 0/0
+closed=55 expanded=55 navigation observations=180 errors=30
+1440/End active
+1440/End select
+1440/End counter
+1440/ArrowRight active
+1440/ArrowRight select
+1440/ArrowRight counter
+1024/End active
+1024/End select
+1024/End counter
+1024/ArrowRight active
+1024/ArrowRight select
+1024/ArrowRight counter
+768/End active
+768/End select
+768/End counter
+768/ArrowRight active
+768/ArrowRight select
+768/ArrowRight counter
+390/End active
+390/End select
+390/End counter
+390/ArrowRight active
+390/ArrowRight select
+390/ArrowRight counter
+320/End active
+320/End select
+320/End counter
+320/ArrowRight active
+320/ArrowRight select
+320/ArrowRight counter

@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "page_size_tests": 55,
+  "sizes": [
+    [
+      1440,
+      900
+    ],
+    [
+      1024,
+      768
+    ],
+    [
+      768,
+      1024
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      320,
+      568
+    ]
+  ],
+  "accordion_open_close_tests": 30,
+  "paging_button_tests": 20,
+  "nav_y_range_by_width": {
+    "1440": 0.0,
+    "1024": 0.0,
+    "768": 0.0,
+    "390": 0.0,
+    "320": 0.0
+  },
+  "failures": [],
+  "scope": "Chromium in isolated local rendered HTML; Safari and real projector not tested. No HTTP verification of source URLs."
+}

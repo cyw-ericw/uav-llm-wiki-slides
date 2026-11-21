@@ -1,0 +1,7 @@
+PASS | assertions 1203 | errors 0
+1440×900 PASS | nav max Δ 0.00 px | horizontal overflow 0 px | minimum bottom clearance 35.6 px
+1024×768 PASS | nav max Δ 0.00 px | horizontal overflow 0 px | minimum bottom clearance 35.6 px
+768×1024 PASS | nav max Δ 0.00 px | horizontal overflow 0 px | minimum bottom clearance 42.2 px
+390×844 PASS | nav max Δ 0.00 px | horizontal overflow 0 px | minimum bottom clearance 43.5 px
+320×568 PASS | nav max Δ 0.00 px | horizontal overflow 0 px | minimum bottom clearance 43.6 px
+普通動畫 0.16s；強制啟用減少動態 CSS 分支後 none；Blob/CSP 下資產請求 0。

@@ -1,0 +1,7 @@
+PASS
+1440×900 PASS | pages 11 | max height closed/open 900/900 | max x overflow closed/open 0/0
+1024×768 PASS | pages 11 | max height closed/open 768/867 | max x overflow closed/open 0/0
+768×1024 PASS | pages 11 | max height closed/open 1024/1024 | max x overflow closed/open 0/0
+390×844 PASS | pages 11 | max height closed/open 844/1218 | max x overflow closed/open 0/0
+320×568 PASS | pages 11 | max height closed/open 939/1416 | max x overflow closed/open 0/0
+closed=55 expanded=55 navigation observations=180 errors=0
