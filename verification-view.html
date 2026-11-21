@@ -1,0 +1,423 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>report｜UAV LLM Wiki</title><link rel="stylesheet" href="site.css"></head><body><header class="top"><nav class="top-inner"><strong>UAV LAB <span style="color:#83c72e">/ Wiki</span></strong><a href="index.html">首頁</a><a href="slides/deck.html">HTML 簡報</a><a href="wiki/index.html">Wiki</a><a href="workflow-view.html">Graph</a><a href="verification-view.html">執行反思</a></nav></header><main class="wrap"><div class="eyebrow">UAV LAB WIKI · WEEK 10</div><article class="md"><h1>第十週 UAV 教學簡報｜Graph／Loop 執行與反思</h1>
+<p><strong>驗收版 · 2026-11-21（臺北）</strong><br/>
+11 頁簡報、34 個正文主張和 11 組自我檢核經獨立審查。8 篇官方文件皆有實際回讀紀錄。最終在 Chrome 以五種尺寸逐頁實測，最大水平溢出為 0 像素。公開部署等候使用者驗收。</p>
+<h2>起點與人工決定</h2>
+<p>輸入為使用者提供的第一階段 ZIP，SHA-256 為 <code>df14479d02c08aed80ccf2dd47065aa071b9a7bb0ca508e39ae5f5883b99c631</code>。解壓時共有 31 個檔案，包括需求、Graph、8 張生成的 Wiki 來源卡、5 篇概念、本機 ingest 與結構檢查報告及 11 頁大綱。cards、drafts 均只有佔位檔；report、sources 仍是待辦；未有 HTML。第一階段的原始內容保存在提交 <code>cd37882</code>，另留 <a href="checks/history/phase1-ingest.json">初版匯入</a>、<a href="checks/history/phase1-validation.json">初版結構檢查</a> 及 <a href="checks/history/phase1-log.md">初版 log</a>。</p>
+<p>讀取課程講義第 52 頁，作業列出先討論後生成、至少五篇 ingest、Graph 或 Loop 生成 HTML，以及設計與心得反思。本次沿用第一階段需求；使用者明確核准原大綱的 11 頁架構。核准範圍、原話見 <a href="slides/outline.md">大綱</a>。技術忠實度與最終展示分別另行驗收。</p>
+<h2>實際執行及退回</h2>
+<table>
+<thead>
+<tr>
+<th>節點／輪次</th>
+<th>實際檢查</th>
+<th>結果</th>
+<th>發現、修正與重測</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>來源對讀 → Ingest</td>
+<td>逐一開啟 8 個登錄網址，對照官方段落、模式表、硬體版本與原卡</td>
+<td>初版 S02 版本對照不完整；補查後 PASS</td>
+<td>S02 原只列標準版慣性元件，新版僅以「不同批次應再核對」帶過。依原頁分列兩組；S07 補入真實錯誤訊息，S08 補預設來源與光流的資料種類。8 篇修訂摘要重新匯入。<a href="wiki/log.html">逐篇 log</a></td>
+</tr>
+<tr>
+<td>大綱／Wiki 結構，第 1 → 2 輪</td>
+<td>核准後實跑舊 validate，再以修正版重跑</td>
+<td>FAIL → PASS</td>
+<td>舊規則硬找「待人工確認」，使已核准大綱失敗。只修改這個關卡，檢查核准標記及 01–11 頁序。<a href="checks/history/approved-outline-old-validator.json">首次失敗</a> · <a href="checks/validation_report.json">重測</a></td>
+</tr>
+<tr>
+<td>Coverage，建卡及修後</td>
+<td>程式以每個正文主張的 Wiki 概念、來源 ID 與事實序號尋回原卡；對照大綱每頁最低要求與實際用到的來源</td>
+<td>PASS</td>
+<td>8/8 來源、5/5 概念、11/11 頁有對應、34/34 正文有證據（四項覆蓋率皆 100%）。第 02、06、08 頁增列佐證，涵蓋原定來源。<a href="checks/card-coverage.json">建卡檢查</a> · <a href="checks/draft-coverage.json">逐頁稿檢查</a></td>
+</tr>
+<tr>
+<td>Draft → Faithfulness，第 1 輪</td>
+<td>未撰寫逐頁稿的獨立 AI 對讀 8 份官網、概念、卡、標題、導語、正文與問答，另查數字及條件</td>
+<td>FAIL，8/11 頁通過</td>
+<td>第 01 頁讀取訊息、第 02 頁板上運算、第 06 頁三種模式的功能，共 5 處的事實條目太籠統。退回這三頁的 Evidence。<a href="checks/faithfulness-round1.md">逐頁判定</a></td>
+</tr>
+<tr>
+<td>Evidence → Faithfulness，第 2 輪</td>
+<td>對 5 個改動逐項重讀；比對其餘檔案與首輪內容</td>
+<td>PASS，11/11 頁</td>
+<td>01c 加 S07.2；02a 加 S01.2；06a/b/c 分別加 S04.1、S05.1、S06.1。逐頁稿與技術內容無需重寫，11 組問答通過。<a href="checks/faithfulness-round2.md">獨立重測</a></td>
+</tr>
+<tr>
+<td>Render → HTML 結構</td>
+<td>綁定已審內容指紋；將 HTML 的標題、導語、段落標籤、正文、題目、解答、限制與引用逐項比回資料</td>
+<td>PASS</td>
+<td>11 頁、34 個正文、11 組問答一致；66 個官方引用指向 8 個已開啟的原頁，來源對照的 176 個連結逐一解析。<a href="checks/render.json">輸出與檔案指紋</a></td>
+</tr>
+<tr>
+<td>HTML 瀏覽器，第 1 輪</td>
+<td>在同源內嵌框用五種尺寸遍歷全簡報，試導覽、展開狀態與溢出</td>
+<td>FAIL，30 個相依斷言</td>
+<td>測試把合成按鍵送到 document，但實際按鍵目標是取得焦點的元素。End、右鍵的頁面、目錄、頁碼各顯錯；五尺寸共 30 個結果。直接按 End 已在單獨的簡報分頁從第 02 頁跳到第 11 頁，定位為測試器問題。</td>
+</tr>
+<tr>
+<td>HTML 瀏覽器，第 2 輪</td>
+<td>僅將測試器的事件目標修為 activeElement，重跑相同矩陣</td>
+<td>PASS</td>
+<td>55 次收合、55 次展開、180 次導覽狀態檢查，錯誤 0。五尺寸每頁都只有一張顯示。<a href="checks/history/browser-round1.txt">首輪原始輸出</a> · <a href="checks/browser-round2.txt">重測原始輸出</a> · <a href="checks/browser-test.html">可重跑測試頁</a></td>
+</tr>
+<tr>
+<td>最後人工展示／正式發布</td>
+<td>本次授權止於離線驗收</td>
+<td>待使用者</td>
+<td>Safari、實體投影、實機觸控及公開網址分列在<a href="NEXT_STEPS.md">人工清單</a>。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>工具執行邊界。</strong> 最初嘗試從命令列啟動的 Chromium 在建立 socket 時被執行環境阻止，沒有進到簡報頁。改以可用的 Chrome 開啟私有靜態預覽，並比對測試副本與交付 HTML 的 SHA-256。靜態解析器初次啟動缺少 Beautiful Soup，改用可用的 lxml 後完成比對。這兩次工具啟動失敗不列作內容或版面缺陷。瀏覽器正式紀錄從第一個完整跑完的矩陣開始。官網可讀性根據原頁對讀判定；HTML 程式另比對目的網址，沒有假設所有 URL 都做過 HTTP 狀態碼探測。</p>
+<h2>瀏覽器量測</h2>
+<p>每組涵蓋 11 頁。測試器檢查文件與可見元素的橫向邊界、受裁切元素及桌面收合高度，同時測上下頁、首末頁邊界、方向鍵、目錄、對應頁碼、問答和來源面板。另在獨立簡報分頁操作下一頁、End、目錄及第 09 頁證據面板；以桌面首頁和 390 像素 Loiter 頁目視確認。</p>
+<table>
+<thead>
+<tr>
+<th>視窗，CSS px</th>
+<th style="text-align:right">收合時最大文件高度</th>
+<th style="text-align:right">展開時最大文件高度</th>
+<th style="text-align:right">最大水平溢出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1440 × 900</td>
+<td style="text-align:right">900</td>
+<td style="text-align:right">900</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>1024 × 768</td>
+<td style="text-align:right">768</td>
+<td style="text-align:right">867</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>768 × 1024</td>
+<td style="text-align:right">1024</td>
+<td style="text-align:right">1024</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>390 × 844</td>
+<td style="text-align:right">844</td>
+<td style="text-align:right">1218</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>320 × 568</td>
+<td style="text-align:right">939</td>
+<td style="text-align:right">1416</td>
+<td style="text-align:right">0</td>
+</tr>
+</tbody>
+</table>
+<p>小螢幕採單欄、下拉目錄和自然垂直捲動。320 像素寬時，較長的頁面即使收合仍須下捲。展開引文後，部分桌面尺寸也可垂直捲動讀完。這是判定「無裁切」時採用的閱讀方式。這裡的手機數字來自 Chrome 版面尺寸測試，尚未在實體手機上操作。</p>
+<h2>Wiki 與流程反思</h2>
+<p><strong>建立 Wiki 時，證據要細到能回答新生的下一個問題。</strong> 例如 S02 同時談標準版和新版。若只抄下第一組型號，寫簡報時很容易把它教成所有 6C 的規格。這次先在來源卡記錄版本，再讓教學頁只說「先辨認版本」。同樣地，第 09 頁把 Loiter 需要的有效定位、非 GPS 例子的原點條件、光流在範例裡提供的水平速度分別連回 S03、S06、S08。讀者可以找出每一項限制出自哪裡。<a href="traceability-view.html#p09">逐頁對照</a></p>
+<p><strong>最常出現的內容問題是證據指得不夠精確。</strong> 以獨立內容審查退回的正文主張計數，5 個都出在 Evidence，分布於 3 頁。最清楚的例子是第 06 頁。結構檢查已找到 S03，仍無法回答「這一條摘要究竟有沒有寫出飛手負責高度」。精確補上 S04.1 後，能從投影片一路讀回原卡和原文。若以失敗的完整測試輪數計算，大綱驗證、忠實度、瀏覽器矩陣各有一輪失敗；30 個瀏覽器斷言來自一個測試器原因，不能當作 30 個獨立的版面錯誤。</p>
+<p><strong>把歸因放在修改前面，可縮小退回範圍。</strong> 原流程容許忠實度退回逐頁稿或證據卡；這次在 <a href="workflow-view.html">workflow</a> 明列「句子正確、條目太籠統 → Evidence」。接著在渲染前綁定已核准的資料指紋；HTML 只負責呈現。第二輪五個退修點全數通過，其他逐頁稿與 Wiki 雜湊一致。瀏覽器層則先用實際按鍵重現，故只調整測試事件的目標。這批重測沒有再出現同一問題，尚無後續批次可據以推論長期成效。</p>
+<p><strong>停止條件。</strong> 本次各局部問題均在一次修正後完成重驗，沒有走到三輪上限。已使用的技術主張沒有待補來源。未來若某項主張找不到原頁段落、條件衝突未解，或三輪後仍無法通過，該頁應停在來源或忠實度節點並登記待確認。使用者對投影可讀性及正式發布的決定另列待辦。</p>
+<p>Wiki 原頁重讀後版本為 <code>8790723</code>，初輪逐頁稿為 <code>8fe76cd</code>，修後證據與核准為 <code>5d49b30</code>。本機歷程可由完整 ZIP 的 Git bundle 還原。</p>
+<h2>人工驗收回饋：換頁導覽列位移（2026-11-21）</h2>
+<p>使用者於 Mac Chrome 本機開啟 <code>deck.html</code> 後，回報連續點擊「上一頁／下一頁」時，按鈕會隨不同頁面內容高度和展開的自我檢核／本頁證據區塊位移，妨礙連續操作。這是正式使用者驗收新發現的 UI 問題，與前述原始簡報瀏覽器測試分開記錄。</p>
+<ul>
+<li><strong>問題節點</strong>：Render → HTML UI/UX；原因是 <code>.nav</code> 留在正文正常文件流的底部，位置取決於當前 slide 高度。</li>
+<li><strong>退回與局部修正</strong>：只修改 <code>scripts/deck-template.html</code> 的 CSS，使 <code>.nav</code> 固定於視窗底部，依側欄與螢幕寬度調整左右邊距；在 <code>.stage</code> 底部加入安全留白，避免固定導覽列遮蔽最後一行；不改任何 Draft、Evidence Card、Wiki、JavaScript 及主題配色。</li>
+<li><strong>重新執行</strong>：由 <code>scripts/render.py</code> 重新產生 <code>slides/deck.html</code>，<code>scripts/check_render.py</code> PASS（11 頁、34 個正文主張、11 組問答及來源連結一致），<code>scripts/check_slides.py --draft</code> PASS。</li>
+<li><strong>獨立瀏覽器驗證</strong>：在 headless Chromium（Playwright）以 1440×900、1024×768、768×1024、390×844、320×568 五種 viewport，各實測 10 次下一頁與 10 次上一頁（合計 100 次）。所有尺寸的 <code>prev</code>、<code>next</code> 按鈕螢幕座標在 11 頁和詳細資料展開前後均不變（容差 0.5 px）；無水平溢出；頁面 1、11 的停用邊界及右方向鍵導航通過。原始結果見 <code>checks/navigation-ux-fix.json</code>。</li>
+<li><strong>尚未驗收</strong>：此修正版尚需使用者以 Mac Chrome／Safari 實機重新操作確認手感；不可把 headless Chromium 測試視為 Safari 或投影機驗證。</li>
+</ul>
+<h2>人工回饋：視覺設計升級 v2（2026-11-21，待使用者審定）</h2>
+<p>使用者實際閱讀後表示現有內容、字級及資訊量適中，但網頁平面視覺比較素。這次依「Render 階段只可更動呈現」原則局部退回 HTML 視覺節點，不重寫原來 11 頁已審的教學內容：</p>
+<ul>
+<li><strong>設計調整</strong>：採用深海綠色側邊欄、章節分色的淺色橫幅、三張知識卡片、各頁對應的離線 SVG 示意圖，以及更明確的字級和問答層級；保留固定底部導覽列。</li>
+<li><strong>資料鎖定</strong>：<code>raw/</code>、<code>wiki/</code>、<code>slides/cards/</code>、<code>slides/drafts/</code>、來源對照和人工核准大綱均未修改。<code>scripts/render.py</code> 僅從 <code>scripts/artwork.py</code> 加入裝飾性示意圖，原文和引用文字仍由既有資料產生。</li>
+<li><strong>程式重測</strong>：<code>check_render.py</code> 對 11 頁、34 個正文主張、11 組問答及所有來源連結重新比對 PASS；與舊 HTML 逐項文字／URL 對照一致。</li>
+<li><strong>瀏覽器重測</strong>：Chromium 針對 1440、1024、768、390、320 像素寬共 55 組頁面／螢幕檢查、30 次展開測試、20 次按鈕換頁檢查，無水平溢出，導覽列的垂直座標變化為 0。原始結果見 <a href="checks/visual-design-v2.json"><code>checks/visual-design-v2.json</code></a>。窄螢幕部分頁面仍需要垂直捲動；Safari、實體投影及使用者主觀設計感受未驗收。</li>
+<li><strong>仍待人工決定</strong>：此版為新設計候選，沒有覆蓋任何公開網站；使用者可比較原版與 v2，再決定部署何者。</li>
+</ul>
+<h1>UAV Lab Wiki｜V3 第一批代表頁驗收</h1>
+<p>2026-11-21（台北）。狀態為程式與 Chromium 驗證通過，等待使用者驗收三種版型。獨立 HTML 預設開第 03 頁，Home 可回到第 01 頁。可在目錄直接切到 06 或 10。</p>
+<h2>設計與範圍</h2>
+<table>
+<thead>
+<tr>
+<th>頁</th>
+<th>改動</th>
+<th>讀圖與查證</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>03 工程圖解</td>
+<td>石墨黑網格上以原創 SVG 拆開運算與感測層。標線直接連到概念元件，右欄以實線和虛線區分板載功能與外接介面。</td>
+<td>圖說交代位置與層次為示意。標準版／新版的說明與查規格的提醒沿用正文，見 03a–03c、S01、S02。</td>
+</tr>
+<tr>
+<td>06 並列比較</td>
+<td>三個模式同時出現；點「高度」或「水平位置」可強調整欄，再點可取消。以整句註明 Loiter 所需的位置估測條件。</td>
+<td>九格逐格對應記於 checks/v3/figure-review.md。本頁證據補上第 07–09 頁跨頁來源線索，油門中立區在高度欄明示。</td>
+</tr>
+<tr>
+<td>10 安全案例</td>
+<td>以琥珀色框出完整錯誤字串，再用箭頭連官方錯誤條目與對應原因。下方保留辨認狀態、讀訊息、查原因並排除三步。</td>
+<td>3D Accel calibration needed 為官方文件範例，對應 10b／S07.4。可展開本頁證據查原文。</td>
+</tr>
+</tbody>
+</table>
+<p>四張視覺參考分別用於技術展示介面的資訊分區、分解圖的錯層與標線、融合圖的群組關係，以及極簡簡報的單一視覺焦點與留白。圖中文字均回到 Wiki 及官方資料。保留每種模式在同一畫面，方便橫向比較；窄螢幕以自然換行和垂直捲動換取完整文字。</p>
+<h2>Graph 與 Loop 實錄</h2>
+<table>
+<thead>
+<tr>
+<th>節點</th>
+<th>狀態</th>
+<th>實作、修正與驗證</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>需求、提案、人工核准</td>
+<td>已核准</td>
+<td>使用者先指定 V2 為唯一基準，再核准「石墨黑工程展示」及 03／06／10 第一批。其餘八頁須另行驗收後才擴充。</td>
+</tr>
+<tr>
+<td>基準與內容保護</td>
+<td>PASS</td>
+<td>從指定 V2 ZIP 比對 58 個受保護檔，包括 Wiki、原始來源、ingest、證據卡、逐頁稿、既有檢查紀錄。原 render.json 另存為 v2-render-baseline.json。其餘八頁 section 的內容相同，檢查排除預設頁變更造成的 hidden 屬性差異。</td>
+</tr>
+<tr>
+<td>代表頁實作與技術忠實度</td>
+<td>PASS 3/3</td>
+<td>獨立審查重開 S01–S07 對應段落。審查指出第 06 頁部分表格用到後三頁的資料；只補圖格追溯與讀圖標籤，保留既有正文。</td>
+</tr>
+<tr>
+<td>模板重建與對照</td>
+<td>PASS</td>
+<td>從模板、CSS、SVG 和逐頁稿重新產生相同 HTML。核對 11 頁、34 個正文主張、11 組問答、11 個證據區、66 處官方引用及 8 個相異官方網址。來源對照檢查涵蓋 177 個連結。連結檢查比對目標，未逐筆量測遠端 HTTP 狀態。</td>
+</tr>
+<tr>
+<td>瀏覽器第一輪</td>
+<td>FAIL，7 項量測</td>
+<td>5 個寬度中量到導覽幾何偏移，最大 15 px。320 px 下另有同一個表頭在展開、收合兩種狀態溢出。原始輸出在 checks/v3/browser-round1.txt。</td>
+</tr>
+<tr>
+<td>局部修正</td>
+<td>已修正 1 輪</td>
+<td>在共享導覽預留捲軸空間、固定按鈕寬高與字型盒、移除 hover／按下時的位移。只在窄寬調整模式欄比例與字級。未回退到 Wiki 或稿件節點。</td>
+</tr>
+<tr>
+<td>瀏覽器第二輪與接續複驗</td>
+<td>PASS</td>
+<td>每次重跑同一組 1,203 項斷言，最後一次零失敗。涵蓋 11 頁逐頁展開收合、連續前後翻頁、方向鍵、Home／End、側欄／下拉目錄、焦點、選欄、頁碼與捲至底部。</td>
+</tr>
+<tr>
+<td>離線資產與動畫</td>
+<td>PASS（測試範圍見下）</td>
+<td>實際 Chromium 載入自包含 HTML 內容，以 Blob 和禁止外部資源的 CSP 重跑互動。資產請求為 0。普通換頁淡入 160 ms，強制啟用減少動態的 CSS 分支後動畫為 none，導覽轉場為 0 秒。</td>
+</tr>
+<tr>
+<td>人工驗收與發布</td>
+<td>待驗收</td>
+<td>本批尚待使用者驗收。未發布 GitHub Pages，未異動第九週專案。</td>
+</tr>
+</tbody>
+</table>
+<h3>修正後的視窗量測</h3>
+<table>
+<thead>
+<tr>
+<th>測試視窗</th>
+<th style="text-align:right">導覽兩按鈕最大位置或尺寸差</th>
+<th style="text-align:right">水平溢出</th>
+<th style="text-align:right">展開證據並捲到底後，內容與導覽的最小淨距</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1440 × 900</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">35.6 px</td>
+</tr>
+<tr>
+<td>1024 × 768</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">35.6 px</td>
+</tr>
+<tr>
+<td>768 × 1024</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">42.2 px</td>
+</tr>
+<tr>
+<td>390 × 844</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">43.5 px</td>
+</tr>
+<tr>
+<td>320 × 568</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">43.6 px</td>
+</tr>
+</tbody>
+</table>
+<p>附檔中三張桌面圖為瀏覽器實際擷取，窄螢幕圖為同一 HTML 在 390 × 844 CSS 像素視窗的畫面。專案內的 checks/v3/screens/ 收錄原圖。</p>
+<h2>反思與剩餘驗收</h2>
+<p>最多失敗集中在 HTML 版面關卡。雖然底部導覽使用固定定位，展開較長內容時，捲軸仍會改變可用寬度；V2 與 V3 之間的文字盒尺寸也須一致。跨版型連點、同時量測兩個按鈕的四個幾何量，才能捕捉這個問題。第 06 頁也顯示整頁寬度正常時，單一表格儲存格仍可能裁字，因此另保留逐格檢查。</p>
+<ul>
+<li>待使用者檢視三種版型的可讀性、圖解層次與換頁手感，再決定其餘八頁。</li>
+<li>待 macOS Safari／Chrome 以 Finder 直接開啟下載的 HTML、macOS 系統「減少動態效果」、實體手機觸控與投影距離下的字級驗收。獨立 headless Chromium 在原執行環境啟動受限，其後以實際受管 Chromium 完成上述測試。該瀏覽器允許 HTTP 預覽，限制直接載入 file URL。</li>
+<li>外部官方連結需連網閱讀。離線時可閱讀簡報正文、問答、逐條引用名稱與圖解。</li>
+</ul>
+<h2>如何重跑</h2>
+<p>從 ZIP 解壓後的專案根目錄依次執行 python3 scripts/source_map.py、python3 scripts/render.py、python3 scripts/check_render.py。啟動 python3 -m http.server，在同一服務開啟 checks/v3-browser.html，按「執行 V3 驗證」。單純播放或閱讀簡報只需開啟 slides/deck.html。受保護檔案的比對清單見 checks/v3/preservation.json。</p>
+<p>交付 HTML SHA-256 為 c675b6bb596bb9aeb9ef7fb108fe077b41596666689bd6611fc62f1d01afc64c。</p>
+<h1>UAV Lab Wiki｜V3 全套驗證報告</h1>
+<p>2026-11-22（台北）。使用者人工核准第一批石墨黑工程展示方向，指定 UAV-V3-batch1-project.zip 為本輪唯一基準。本版回到第 01 頁作為預設入口；開啟 slides/deck.html 即可閱讀整套。</p>
+<h2>教學設計與來源</h2>
+<table>
+<thead>
+<tr>
+<th>頁</th>
+<th>閱讀方式與實作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01／02</td>
+<td>課程地圖可直接跳到硬體、模式或安全案例。系統分工頁將板型文件、目前安裝的韌體及各自應查的文件並列。</td>
+</tr>
+<tr>
+<td>03／04</td>
+<td>延用已核准的 Pixhawk 工程圖；下一頁以感測器名錄連接 IMU、磁力計與氣壓計的角色。</td>
+</tr>
+<tr>
+<td>05</td>
+<td>三條路徑分別標出氣壓與垂直位置、羅盤與航向、光流與水平速度。用預設來源及官方配置範例區分適用範圍；圖下說明該光流範例估出相對水平位置。見 S08.1、S08.3、S08.4。</td>
+</tr>
+<tr>
+<td>06</td>
+<td>桌面同框比較三種模式。390 CSS px 及以下依模式分組，每張都有姿態、高度、水平位置三列。兩種版型取自同一組資料，維持原有欄位強調功能與定點條件。</td>
+</tr>
+<tr>
+<td>07–09</td>
+<td>共用同一四旋翼圖檔、投影角度、比例和地面十字。07 以淡色傾斜輪廓與回平後的位置說明漂移；08 以等高線對照同高度的不同水平位置；09 將機體投影到定點，明列位置估測有效的前提。</td>
+</tr>
+<tr>
+<td>10／11</td>
+<td>延用 Pre-Arm 完整訊息案例。結尾以「回平、定高、定點」三個回看入口連回對應圖解，保留最後的安全檢查提醒。</td>
+</tr>
+</tbody>
+</table>
+<p>逐頁 Wiki 與原始文件對照在 slides/sources.md；新增圖解的對應條目與適用條件在 checks/final/faithfulness.md。技術圖使用內嵌 SVG、HTML 及 CSS，機體位置與高度只作概念比較，未加入飛行測量數值。</p>
+<h2>Graph／Loop 執行紀錄</h2>
+<table>
+<thead>
+<tr>
+<th>節點</th>
+<th>判定</th>
+<th>實際依據或局部修正</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>人工核准、取用基準</td>
+<td>已核准</td>
+<td>第一批 03／06／10 通過使用者的方向驗收。解開指定 ZIP 在獨立工作版本改動。原包及第一批的瀏覽器與審查紀錄保留。</td>
+</tr>
+<tr>
+<td>來源覆蓋與正文</td>
+<td>PASS</td>
+<td>重新執行 validate、check_slides、source_map、render 與 check_render。8/8 來源、5 篇概念、11 張證據卡、34/34 主張、11 組問答、11 個證據區符合。66 處官方引用、8 個相異網址及來源對照內 178 個連結通過比對。重新開啟八份官方文件並對讀關鍵段落；程式連結測試檢查目標與內部錨點。</td>
+</tr>
+<tr>
+<td>圖解忠實度首輪</td>
+<td>FAIL，10/11</td>
+<td>第 09 頁將水平桿回中與高度保持放在同一句。Loiter 文件分別描述水平桿與油門桿，原句會使新手混淆控制軸。</td>
+</tr>
+<tr>
+<td>第 09 頁局部修正、再審</td>
+<td>PASS，11/11</td>
+<td>圖說改為「減速後嘗試維持水平位置」。獨立審查重新核對渲染函式、最終畫面文字及 SVG 無障礙標籤。保留有效定位、非 GPS 來源與原點條件。僅修正圖說一次。</td>
+</tr>
+<tr>
+<td>課文與歷史保護</td>
+<td>PASS</td>
+<td>直接與第一批 ZIP 逐位元組比對 61 個檔案，含原始資料、Wiki、證據卡、逐頁稿與第一批檢查檔。比對第 03、10 頁及第 06 頁桌面表格的 HTML 結構；只排除預設起始頁造成的 hidden 差異。完整名單見 checks/final/preservation.json。</td>
+</tr>
+<tr>
+<td>瀏覽器功能與互動</td>
+<td>PASS</td>
+<td>在實際 Chromium 執行 checks/final-browser.html。五種尺寸、逐頁導覽與展開收合、連續前進及後退、Home／End、方向鍵、目錄、焦點、章節連結、欄位強調及手機卡片與桌面表格的內容比對，共 1,445 項斷言，零失敗。</td>
+</tr>
+<tr>
+<td>離線與減少動態</td>
+<td>PASS（測試範圍如下）</td>
+<td>將成品載入 Blob 並禁止外部資源，重跑互動，資產請求數為 0。一般動畫為 160 ms，啟用相同的減少動態 CSS 分支後，計算樣式為無動畫、按鈕轉場為 0 秒。</td>
+</tr>
+<tr>
+<td>渲染與交付</td>
+<td>PASS</td>
+<td>從模板重建 HTML 並與瀏覽器測試版本逐位元組核對。保存 4 張桌面與 5 張 390 × 844 窄螢幕實際截圖。專案 ZIP 含第一批與本批的測試入口和紀錄。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>視窗</th>
+<th style="text-align:right">兩個導覽按鈕最大位置／尺寸變化</th>
+<th style="text-align:right">水平溢出</th>
+<th style="text-align:right">證據展開、捲到底後與導覽的最小間距</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1440 × 900</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">38.6 px</td>
+</tr>
+<tr>
+<td>1024 × 768</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">38.5 px</td>
+</tr>
+<tr>
+<td>768 × 1024</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">44.6 px</td>
+</tr>
+<tr>
+<td>390 × 844</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">46.5 px</td>
+</tr>
+<tr>
+<td>320 × 568</td>
+<td style="text-align:right">0.00 px</td>
+<td style="text-align:right">0 px</td>
+<td style="text-align:right">46.6 px</td>
+</tr>
+</tbody>
+</table>
+<h2>反思與待人工驗收</h2>
+<p>本輪只有圖解忠實度節點出現一次失敗。同一張圖同時畫出機身高度與水平位置，很容易在短圖說裡將兩條控制軸的條件寫在一起。檢查時將「哪支桿回中」與「哪個量被保持」逐句配對，才發現第 09 頁的歧義。幾何或連結檢查無法代替這項判讀。</p>
+<p>瀏覽器重測未觀察到水平溢出或導覽偏移。手機卡片用較多垂直空間換取完整欄名；定位條件、自我檢核及證據可繼續向下捲動閱讀。實體手機觸控、投影機亮度與後排字級、Mac Safari／Chrome 從 Finder 直接開啟 HTML，以及 macOS 系統減少動態效果仍待人工驗收。離線閱讀簡報可使用所有內嵌圖解與互動，前往官方原文需網路。正式部署須另行授權。</p>
+<h2>複驗入口</h2>
+<p>從專案根目錄執行 python3 scripts/validate.py、python3 scripts/check_slides.py --draft、python3 scripts/source_map.py、python3 scripts/render.py、python3 scripts/check_render.py。啟動 python3 -m http.server，從同一服務打開 checks/final-browser.html 並按「執行 V3 驗證」。原始結果見 checks/final/browser.txt；截圖位於 checks/final/screens/。</p>
+<p>本輪瀏覽器測試成品的 SHA-256 為 6ec3c410f02df8902e7e845aac15f0ef4f477218a816254bbed8380a422c93fc。</p>
+</article><p class="small" style="margin-top:48px;border-top:1px solid #3c4840;padding-top:20px">公開閱讀版由 Markdown 產生，原始筆記與測試檔保留在專案中。官方來源為外部網站。</p></main></body></html>

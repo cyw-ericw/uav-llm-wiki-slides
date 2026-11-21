@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAV 入門教學｜無人機實驗室</title>
+<style>
+:root{--ink:#153c37;--dark:#123b35;--muted:#4e6560;--paper:#f9f8f1;--line:#cdd7cb;--amber:#f5be69;--soft:#e5eee2;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 "PingFang TC","Noto Sans CJK TC","Microsoft JhengHei",system-ui,sans-serif}button,select,summary{font:inherit}button,select,summary,a{touch-action:manipulation}button,summary,select{cursor:pointer}button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #be7220;outline-offset:3px}a{color:inherit;text-underline-offset:.23em}.app{max-width:1800px;min-height:100vh;margin:auto;display:grid;grid-template-columns:clamp(220px,21vw,310px) minmax(0,1fr)}aside{background:var(--dark);color:#f3f4e9;padding:30px 16px}aside .brand{font-size:22px;font-weight:760;letter-spacing:.03em;margin:0 10px}.edition{font-size:12px;letter-spacing:.1em;color:#bcd3c6;margin:4px 10px 28px}.contents{display:grid;gap:3px}.contents a{text-decoration:none;display:grid;grid-template-columns:27px 1fr;align-items:baseline;gap:4px;padding:8px 10px;border-radius:5px;font-size:14px;line-height:1.45;color:#e2eae2}.contents a:hover{background:#245046}.contents a[aria-current=page]{background:#dcebd6;color:#173d31;font-weight:700}.num,.counter,.chapter{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums}.num{font-size:12px;opacity:.83}.stage{min-width:0;padding:24px clamp(20px,4vw,68px) 16px}.top,.nav{display:flex;justify-content:space-between;align-items:center;gap:10px}.top{padding-bottom:12px;border-bottom:1px solid var(--line);color:var(--muted);font-size:14px}.chapter{font-weight:700;color:var(--ink)}.track{height:3px;background:#dde3d7}.track i{height:100%;display:block;background:#c4822e}.mobile{display:none}.frame{margin:23px auto 0;max-width:1080px}.frame[hidden]{display:none}h1{font-size:clamp(30px,3.15vw,58px);line-height:1.23;letter-spacing:-.04em;margin:0 0 9px;overflow-wrap:anywhere}h1:focus{outline:none}.lead{font-size:clamp(17px,1.5vw,24px);line-height:1.5;margin:0 0 18px;color:#3a554c}.rows{border-top:2px solid var(--ink)}.row{display:grid;grid-template-columns:minmax(155px,28%) minmax(0,1fr);align-items:baseline;gap:20px;padding:14px 0;border-bottom:1px solid var(--line)}.row h2{font-size:clamp(16px,1.45vw,22px);margin:0}.row p{font-size:clamp(16px,1.32vw,21px);margin:0}.first .rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.first .row{display:block}.first .row h2{margin:0 0 7px}.practice{background:var(--soft);padding:13px 16px;border-left:4px solid #598061;margin:16px 0 10px;border-radius:0 5px 5px 0}.practice summary{font-weight:650}.hint{color:var(--muted);font-size:13px;margin-right:8px}.practice p{margin:9px 0 1px}.refs{font-size:14px;color:var(--muted)}.refs summary{width:fit-content;padding:5px 0}.refs ul{padding-left:20px}.refs li{margin:6px 0}.refs a{font-weight:640}.nav{max-width:1080px;margin:16px auto 0;border-top:1px solid var(--line);padding-top:12px}.nav button{background:var(--ink);color:white;border:0;padding:8px 15px;border-radius:5px;font-weight:600}.nav button:disabled{background:#dce1d6;color:#647169;cursor:default}.nav small{color:var(--muted)}.counter{white-space:nowrap}p,summary,li{overflow-wrap:anywhere}
+@media(min-width:1450px){.frame{margin-top:45px}.row{padding:20px 0}.practice{margin-top:26px}}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{display:none}.mobile{display:block;max-width:60%;color:var(--ink);border:1px solid var(--line);background:var(--paper);padding:5px 3px;border-radius:4px;font-size:14px;min-width:0}.top>.course{display:none}.stage{padding:16px clamp(14px,4vw,30px)}.frame{margin-top:20px}}
+@media(max-width:580px){.first .rows{display:block}.row,.first .row{display:block;padding:10px 0}.row h2,.first .row h2{margin-bottom:3px}.frame{margin-top:15px}.practice{padding:10px 12px}.nav small{display:none}.top{flex-wrap:wrap}.lead{margin-bottom:12px}.chapter{font-size:13px}.refs{font-size:14px}}
+/* Phase 2 UX patch: keep both paging targets at a constant viewport coordinate.
+   The original footer was in document flow and moved as slides/details changed height. */
+.stage{padding-bottom:calc(92px + env(safe-area-inset-bottom, 0px))}
+.nav{
+ position:fixed;
+ left:calc(max(0px, (100vw - 1800px)/2) + clamp(220px,21vw,310px));
+ right:max(0px, (100vw - 1800px)/2);
+ bottom:0;
+ max-width:none;
+ margin:0;
+ padding:12px clamp(20px,4vw,68px) calc(12px + env(safe-area-inset-bottom, 0px));
+ background:var(--paper);
+ border-top:1px solid var(--line);
+ box-shadow:0 -5px 16px rgba(21,60,55,.055);
+ z-index:30;
+}
+@media(max-width:900px){
+ .stage{padding-bottom:calc(91px + env(safe-area-inset-bottom, 0px))}
+ .nav{left:0;right:0;padding:10px clamp(14px,4vw,30px) calc(10px + env(safe-area-inset-bottom, 0px))}
+}
+@media print{aside,.top,.track,.nav,.refs,select{display:none!important}.app{display:block}.stage{padding:0}.frame,.frame[hidden]{display:block;break-after:page}.practice p{display:block}.frame:last-of-type{break-after:auto}}
+
+/* Visual design v2: source-neutral visual system, no technical claims altered */
+:root{--ink:#153b3b;--dark:#102b34;--muted:#4d6766;--paper:#f4f7f7;--line:#dce6e7;--soft:#e8f4ec;--accent:#13a68d;--accent-dark:#076f67;--haze:#daf5ec}
+body{background:#eaf0f1;color:var(--ink);font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}
+.app{max-width:none;grid-template-columns:clamp(230px,21vw,316px) minmax(0,1fr)}
+aside{position:sticky;top:0;height:100vh;padding:36px 18px 22px;background:linear-gradient(160deg,#0d2d38 0%,#103b40 62%,#0a3e3a 100%);overflow-y:auto;scrollbar-width:thin;scrollbar-color:#35716e transparent}
+aside::before{content:"";position:absolute;top:-94px;right:-73px;width:270px;height:270px;border:1px solid #c4eedd33;border-radius:50%;box-shadow:0 0 0 37px #b4e5d410,0 0 0 85px #b4e5d408;pointer-events:none}
+aside .brand{position:relative;margin:0 10px;padding-left:34px;font-size:22px;font-weight:800;letter-spacing:.04em;color:#fbfdf9}
+aside .brand::before{content:"✦";position:absolute;left:0;top:2px;width:25px;height:25px;display:grid;place-items:center;border-radius:9px;background:#3fd4ad;color:#0b3535;font-size:16px}
+.edition{position:relative;margin:8px 10px 32px;color:#91c8ba;letter-spacing:.17em}
+.contents{position:relative;gap:4px}
+.contents a{position:relative;align-items:center;border-radius:11px;padding:10px 11px;color:#dcebe8;transition:background .18s,color .18s,transform .18s}
+.contents a:hover{background:#ffffff1b;transform:translateX(3px)}
+.contents a[aria-current=page]{background:#d8f6e9;color:#12403b;box-shadow:0 5px 18px #00000018}
+.contents a[aria-current=page]::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:#10aa91}
+.contents .num{font-size:12px;font-weight:750;opacity:.65}
+.stage{padding:25px clamp(23px,4.2vw,70px) 105px;background:linear-gradient(125deg,#f5f8f8 0%,#f5f9f7 75%,#eef5f4 100%);min-height:100vh}
+.top{border-bottom:0;padding-bottom:13px;color:#657a78;letter-spacing:.025em}
+.top .course{font-weight:650}
+.chapter{font-size:13px;font-weight:770;background:#e1efeb;padding:4px 13px;border-radius:30px;color:#2d7067}
+.counter{font-weight:780;font-size:15px;color:#255f5b}
+.track{height:5px;background:#dae9e5;border-radius:20px;overflow:hidden}
+.track i{background:linear-gradient(90deg,#17b79a,#49c8c1);border-radius:20px;transition:width .24s ease}
+.frame{--accent:#16aa92;--accent-dark:#0a706a;--haze:#dff7ee;isolation:isolate;position:relative;margin:23px auto 0;max-width:1180px;padding:33px 0 4px}
+.frame:is(#p02,#p03,#p04,#p05){--accent:#2681b6;--accent-dark:#235e89;--haze:#e1f1fa}
+.frame:is(#p06,#p07,#p08,#p09){--accent:#5d82c5;--accent-dark:#405a9c;--haze:#e7ebfb}
+.frame:is(#p10,#p11){--accent:#b56d46;--accent-dark:#98522c;--haze:#f9ebdd}
+.frame::before{content:"";position:absolute;z-index:-2;top:0;left:-20px;right:-20px;height:216px;background:radial-gradient(circle at 90% 15%,#ffffff88,transparent 48%),linear-gradient(112deg,#ffffff 0%,var(--haze) 100%);border:1px solid #ffffffc0;border-radius:26px;box-shadow:0 16px 40px #184b4610}
+.frame::after{content:attr(data-chapter) "  ·  UAV LAB";position:absolute;top:12px;left:6px;color:var(--accent-dark);font-size:11px;font-weight:780;letter-spacing:.15em}
+.frame h1{position:relative;z-index:1;max-width:70%;font-weight:820;line-height:1.14;font-size:clamp(30px,3.4vw,55px);letter-spacing:-.045em;margin:12px 0 14px;color:#173d41}
+.frame .lead{position:relative;z-index:1;max-width:67%;font-size:clamp(17px,1.6vw,22px);color:#446260;font-weight:540;line-height:1.55;margin-bottom:55px}
+.hero-art{position:absolute;right:1px;top:13px;width:245px;height:174px;color:var(--accent-dark);opacity:.85;z-index:0;pointer-events:none;transform:rotate(2deg)}
+.hero-art svg{display:block;width:100%;height:100%;filter:drop-shadow(0 6px 5px #1a575611)}
+.rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;border:none;margin:0 0 21px;counter-reset:insight}
+.row,.first .row{display:flex;flex-direction:column;align-items:stretch;gap:9px;min-width:0;min-height:187px;padding:19px 20px 18px;border-radius:18px;border:1px solid #e3e9e8;background:#fff;box-shadow:0 7px 23px #163b3a0b;border-bottom:1px solid #e3e9e8;counter-increment:insight;transition:box-shadow .18s,transform .18s}
+.row::before{content:"0" counter(insight);display:block;align-self:flex-start;font:800 12px/1.8 ui-monospace,monospace;letter-spacing:.06em;color:var(--accent-dark);background:var(--haze);padding:0 11px;border-radius:10px}
+.row h2,.first .row h2{font-size:clamp(17px,1.45vw,20px);font-weight:800;line-height:1.4;margin:1px 0 0;color:#194444}
+.row p{font-size:clamp(16px,1.31vw,20px);line-height:1.6;color:#3d5957;margin:0}
+.first .rows{gap:15px}
+.practice{background:#e5f3ed;border:1px solid #d1e9dd;border-left:4px solid #21a184;padding:13px 17px;margin:14px 0 8px;border-radius:11px}
+.practice summary{font-weight:750;color:#175f53}
+.practice .hint{display:inline-flex;background:#c9e7dc;border-radius:7px;padding:3px 7px;margin-right:9px;color:#216859;font-weight:750}
+.practice p{margin:11px 0 3px;font-size:16px;line-height:1.7}
+.refs{font-size:14px;color:#627c79;padding:0 3px}
+.refs summary{font-size:13px;font-weight:650;padding:8px 0}
+.refs[open]{background:#f0f7f5;border:1px solid #d8e9e2;border-radius:11px;padding:8px 15px;margin-top:8px}
+.refs li{line-height:1.68}
+.refs a{color:#246b66;text-decoration-thickness:1px}
+.nav{left:clamp(230px,21vw,316px);right:0;padding:13px clamp(23px,4.2vw,70px) calc(13px + env(safe-area-inset-bottom, 0px));background:#f8fbfaee;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 -8px 28px #163b3a11}
+.nav button{border:1px solid #0b6d67;border-radius:12px;padding:10px 20px;background:#0d5956;font-weight:800;box-shadow:0 3px 0 #0a4744;transition:transform .12s,box-shadow .12s,background .12s}
+.nav button:not(:disabled):hover{background:#087a6e;box-shadow:0 5px 0 #07554d;transform:translateY(-2px)}
+.nav button:not(:disabled):active{box-shadow:0 1px 0 #07554d;transform:translateY(2px)}
+.nav button:disabled{border-color:#d9e5e1;background:#e5ede9;color:#899d99;box-shadow:none}
+.nav small{font-size:13px;color:#7b908d}
+@media(min-width:1450px){.frame{margin-top:30px}.row{min-height:220px;padding:25px 24px}.practice{margin-top:20px}}
+@media(max-width:1180px){.frame h1,.frame .lead{max-width:68%}.hero-art{width:190px}.rows{gap:11px}.row{padding:16px 14px;min-height:220px}.row p{font-size:16px}}
+@media(max-width:900px){aside{display:none}.app{grid-template-columns:1fr}.stage{padding:16px clamp(14px,4vw,30px) 105px}.frame{margin-top:12px;padding-top:30px}.nav{left:0;right:0;padding:10px clamp(14px,4vw,30px) calc(10px + env(safe-area-inset-bottom, 0px))}.row{min-height:192px}}
+@media(max-width:700px){.rows,.first .rows{grid-template-columns:1fr;gap:10px}.row,.first .row{min-height:0;padding:15px 18px}.frame h1,.frame .lead{max-width:none}.frame h1{font-size:clamp(28px,6vw,40px)}.frame .lead{font-size:17px;margin-bottom:53px}.frame::before{height:200px;left:-9px;right:-9px;border-radius:19px}.hero-art{opacity:.17;right:0;top:20px;width:190px}.frame::after{left:4px}.row p{font-size:16px}}
+@media(max-width:420px){.frame{padding-top:32px}.frame::before{height:228px}.frame .lead{margin-bottom:54px}.nav small{display:none}.nav button{padding:9px 13px}.top{gap:7px}.chapter{font-size:11px;padding:4px 8px}}
+@media(prefers-reduced-motion:reduce){.contents a,.row,.nav button,.track i{transition:none!important}}
+@media print{.frame{break-after:page;padding-top:25px}.frame::before{print-color-adjust:exact}.hero-art{position:absolute;right:0;top:10px}.rows{grid-template-columns:repeat(3,minmax(0,1fr))}.row{min-height:auto}}
+@@V3CSS@@
+</style></head><body><div class="app"><aside aria-label="課程目錄"><p class="brand">無人機實驗室</p><p class="edition">UAV · 入門教學手冊</p><nav class="contents" aria-label="跳到指定頁">@@INDEX@@</nav></aside>
+<main class="stage"><div class="top"><span class="course">實驗室新人課程</span><select class="mobile" aria-label="投影片目錄">@@OPTIONS@@</select><span class="chapter"></span><span class="counter" aria-live="polite"></span></div><div class="track" aria-hidden="true"><i></i></div>
+@@SLIDES@@
+<nav class="nav" aria-label="換頁"><button id="prev" type="button">← 上一頁</button><small>← → 換頁　·　Home / End 首末頁</small><button id="next" type="button">下一頁 →</button></nav></main></div>
+<script>
+const frames=Array.from(document.querySelectorAll('.frame'));
+const links=Array.from(document.querySelectorAll('.contents a'));
+const select=document.querySelector('select');
+const prev=document.querySelector('#prev'),next=document.querySelector('#next');
+let active=0;
+function pageFromHash(){const n=frames.findIndex(f=>'#'+f.id===location.hash);return n<0?0:n}
+function show(focus=false){
+  active=pageFromHash();
+  document.body.classList.toggle("workshop",frames[active].classList.contains("v3"));
+  frames.forEach((f,i)=>{f.hidden=i!==active;links[i].setAttribute('aria-current',i===active?'page':'false')});
+  prev.disabled=active===0;next.disabled=active===frames.length-1;
+  select.selectedIndex=active;
+  document.querySelector('.counter').textContent=String(active+1).padStart(2,'0')+' / '+frames.length;
+  document.querySelector('.chapter').textContent=frames[active].dataset.chapter;
+  document.querySelector('.track i').style.width=((active+1)/frames.length*100)+'%';
+  if(focus){frames[active].querySelector('h1').focus({preventScroll:true});window.scrollTo(0,0)}
+}
+function go(i){
+ if(i<0||i>=frames.length||i===active)return;
+ location.hash=frames[i].id;
+ show(true);
+}
+prev.onclick=()=>go(active-1);next.onclick=()=>go(active+1);
+select.onchange=()=>go(select.selectedIndex);
+window.addEventListener('hashchange',()=>{if(pageFromHash()!==active)show(true)});
+document.addEventListener('keydown',e=>{
+ if(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey||e.target.closest('select,input,textarea'))return;
+ const targets={ArrowLeft:active-1,ArrowRight:active+1,Home:0,End:frames.length-1};
+ if(Object.hasOwn(targets,e.key)){e.preventDefault();go(targets[e.key])}
+});
+document.querySelectorAll('.focus-cols button').forEach(button=>{
+ button.addEventListener('click',()=>{
+   const panel=button.closest('.tech-panel'), selected=button.getAttribute('aria-pressed')!=='true';
+   panel.dataset.col=selected?button.dataset.col:'';
+   panel.querySelectorAll('.focus-cols button').forEach(b=>b.setAttribute('aria-pressed',String(selected&&b===button)));
+ });
+});
+show();
+</script></body></html>

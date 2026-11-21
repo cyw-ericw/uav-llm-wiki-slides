@@ -1,0 +1,9 @@
+<g stroke-linejoin="round">
+  <!-- Same oblique front view and size for every flight mode. -->
+  <g stroke="#657b7c" stroke-width="7" fill="none"><path d="M-8 2 -31 -13 M8 2 31 -13 M-8 4 -48 13 M8 4 48 13"/></g>
+  <g stroke="#daece8" stroke-width="1.4" fill="#728a89"><ellipse cx="-31" cy="-18" rx="23" ry="3.2"/><ellipse cx="31" cy="-18" rx="23" ry="3.2"/><ellipse cx="-48" cy="8" rx="26" ry="3.6"/><ellipse cx="48" cy="8" rx="26" ry="3.6"/></g>
+  <g fill="#27383c" stroke="#bbd0c8"><path d="M-34 -16h6v6h-6z M28 -16h6v6h-6z M-52 9h8v8h-8z M44 9h8v8h-8z"/></g>
+  <path d="M-17 0 -7 -11 10 -11 20 0 13 10 -12 10z" fill="#6f8886" stroke="#cbdbd2"/>
+  <path d="M-17 0 -4 4 20 0 13 10 -12 10z" fill="#304044"/><path d="M-9 -5 7 -7 12 -2 -4 1z" fill="#c4ef8e"/>
+  <path d="m-10 10 -4 12h-10m34 -12 5 12h9" fill="none" stroke="#9cb3ad" stroke-width="3"/>
+</g>

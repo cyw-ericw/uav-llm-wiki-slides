@@ -1,0 +1,63 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>log｜UAV LLM Wiki</title><link rel="stylesheet" href="../site.css"></head><body><header class="top"><nav class="top-inner"><strong>UAV LAB <span style="color:#83c72e">/ Wiki</span></strong><a href="../index.html">首頁</a><a href="../slides/deck.html">HTML 簡報</a><a href="index.html">Wiki</a><a href="../workflow-view.html">Graph</a><a href="../verification-view.html">執行反思</a></nav></header><main class="wrap"><div class="eyebrow">UAV LAB WIKI · WEEK 10</div><article class="md"><h1>LLM Wiki Ingest Log</h1>
+<ul>
+<li>執行日期：2026-11-21T14:45:08+08:00</li>
+<li>指令：<code>python3 scripts/ingest.py</code></li>
+<li>來源：<code>raw/source_cards.json</code>，由官網已查閱資訊整理的中文摘錄（非網頁全文）</li>
+<li>本次完成：8 篇不同的官方資料 → <code>wiki/sources/Sxx.md</code></li>
+<li>來源 ID：S01, S02, S03, S04, S05, S06, S07, S08</li>
+<li>概念筆記：5 篇已備妥，見 <code>wiki/concepts/</code></li>
+<li>結果：來源卡已成功建立。HTML 教學簡報尚未完成。</li>
+<li>內容忠實度：<strong>仍需後續獨立審查</strong>。即使 Python 驗證通過，也不代表來源無誤。</li>
+<li>驗證檔案：<code>checks/ingest_report.json</code>、<code>checks/validation_report.json</code></li>
+</ul>
+<h2>重現方式</h2>
+<pre><code class="language-bash">python3 scripts/ingest.py
+python3 scripts/validate.py
+</code></pre>
+<h2>2026-11-21T15:01:58+08:00｜第二階段重新匯入</h2>
+<p>讀取已對照原頁的 raw/source_cards.json，產生 8 張來源卡與索引。本指令只處理本機資料；原頁閱讀日期與查閱段落見每張來源卡的「原頁對讀」。 結構檢查與內容審查另見 checks/ 與 slides/report.md。</p>
+<h3>本次八份原始文件的核對範圍</h3>
+<p>第一階段留存的 log 能證實 8 張摘要已匯入；初版沒有提供獨立逐頁回讀的輸出。本階段實際開啟原頁並對照相關段落，再重跑 ingest。原頁查閱證據見每張卡末的「原頁對讀」及 <a href="../checks/faithfulness-round1.md">獨立審查紀錄</a>。本次保存中文摘錄與段落線索，官網仍是可更新的文件。</p>
+<table>
+<thead>
+<tr>
+<th>原頁</th>
+<th>查閱位置／本次決定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../wiki-view/sources/S01.html">S01</a></td>
+<td>Overview 首段與設計說明；分開記錄板型和出廠預裝韌體。</td>
+</tr>
+<tr>
+<td><a href="../wiki-view/sources/S02.html">S02</a></td>
+<td>On-board sensors 和 Interfaces；把標準版與新版的兩組型號分開。</td>
+</tr>
+<tr>
+<td><a href="../wiki-view/sources/S03.html">S03</a></td>
+<td>Overview 模式表及 GPS Dependency；定位需求指有效水平位置。</td>
+</tr>
+<tr>
+<td><a href="../wiki-view/sources/S04.html">S04</a></td>
+<td>Warning 與 Overview；核對回平、油門和有風時的漂移。</td>
+</tr>
+<tr>
+<td><a href="../wiki-view/sources/S05.html">S05</a></td>
+<td>Overview、氣壓 Note 與 Controls；保留中立區及氣壓變動的條件。</td>
+</tr>
+<tr>
+<td><a href="../wiki-view/sources/S06.html">S06</a></td>
+<td>首段與 Controls；保留替代來源有效及估測原點的條件。</td>
+</tr>
+<tr>
+<td><a href="../wiki-view/sources/S07.html">S07</a></td>
+<td>Warning、地面站辨識段落及錯誤表；新增真實校正訊息作讀表練習。</td>
+</tr>
+<tr>
+<td><a href="../wiki-view/sources/S08.html">S08</a></td>
+<td>垂直位置／航向來源、Source Switching 與光流範例；區分水平速度及相對位置。</td>
+</tr>
+</tbody>
+</table>
+</article><p class="small" style="margin-top:48px;border-top:1px solid #3c4840;padding-top:20px">公開閱讀版由 Markdown 產生，原始筆記與測試檔保留在專案中。官方來源為外部網站。</p></main></body></html>

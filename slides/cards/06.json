@@ -1,0 +1,38 @@
+{
+  "page": "06",
+  "title": "為什麼有不同飛行模式？",
+  "claims": [
+    {
+      "id": "06a",
+      "wiki": "flight-modes",
+      "facts": [
+        "S03.1",
+        "S03.2",
+        "S04.1"
+      ],
+      "claim": "Stabilize 回平，高度仍由飛手控制。"
+    },
+    {
+      "id": "06b",
+      "wiki": "flight-modes",
+      "facts": [
+        "S03.1",
+        "S03.2",
+        "S05.1"
+      ],
+      "claim": "AltHold 增加定高，不要求水平位置。"
+    },
+    {
+      "id": "06c",
+      "wiki": "flight-modes",
+      "facts": [
+        "S03.1",
+        "S03.2",
+        "S03.3",
+        "S06.1"
+      ],
+      "claim": "Loiter 嘗試維持水平位置，需要有效定位。"
+    }
+  ],
+  "limit": "表內「不需要」僅指水平位置資訊。"
+}

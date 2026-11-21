@@ -1,0 +1,89 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><title>V3 全部 11 頁瀏覽器檢查</title>
+<style>pre{white-space:pre-wrap}iframe{display:block;border:0}</style>
+<button id="run">執行 V3 驗證</button><pre id="log">等待執行</pre><iframe title="測試目標" width="1440" height="900"></iframe>
+<script>
+const frame=document.querySelector('iframe'), out=document.querySelector('pre');
+const pause=(ms=22)=>new Promise(resolve=>setTimeout(resolve,ms));
+document.querySelector('button').onclick=async function(){
+ this.disabled=true;
+ const rows=[], errors=[];
+ let assertions=0;
+ function check(ok,msg){assertions++;if(!ok)errors.push(msg)}
+ try{
+  const response=await fetch('../slides/deck.html',{cache:'no-store'});
+  if(!response.ok)throw Error('無法載入測試樣本');
+  const html=await response.text();
+  const policy='<meta http-equiv="Content-Security-Policy" content="default-src &apos;none&apos;; style-src &apos;unsafe-inline&apos;; script-src &apos;unsafe-inline&apos;; connect-src &apos;none&apos;">';
+  const url=URL.createObjectURL(new Blob([html.replace(/<head>/i,'<head>'+policy)],{type:'text/html;charset=utf-8'}));
+  await new Promise(resolve=>{frame.onload=resolve;frame.src=url});
+  const w=frame.contentWindow,d=frame.contentDocument;
+  const q=s=>d.querySelector(s), all=s=>[...d.querySelectorAll(s)];
+  const key=k=>d.activeElement.dispatchEvent(new w.KeyboardEvent('keydown',{key:k,bubbles:true}));
+  const visible=()=>q('.frame:not([hidden])');
+  const nav=()=>['#prev','#next'].flatMap(s=>{const r=q(s).getBoundingClientRect();return [r.x,r.y,r.width,r.height]});
+  check(visible().id==='p01','預設課程導讀');
+  for(const [width,height] of [[1440,900],[1024,768],[768,1024],[390,844],[320,568]]){
+   frame.width=width;frame.height=height;await pause();
+   key('Home');await pause();
+   const base=nav(), start=errors.length;let shift=0,overflow=0,minClear=Infinity;
+   function fixed(){const diff=Math.max(...nav().map((n,i)=>Math.abs(n-base[i])));shift=Math.max(shift,diff)}
+   const state=i=>{const p=visible();check(all('.frame:not([hidden])').length===1&&p.id==='p'+String(i+1).padStart(2,'0')&&q('select').selectedIndex===i&&q('.counter').textContent.startsWith(p.id.substring(1)),width+' active '+i);fixed()};
+   for(let i=0;i<11;i++){
+    if(i)q('#next').click();state(i);
+    const p=visible();
+    for(const open of [true,false]){
+     for(const el of p.querySelectorAll('details')){el.querySelector('summary').click();check(el.open===open,width+' details '+p.id)}
+     await pause();fixed();
+     overflow=Math.max(overflow,d.documentElement.scrollWidth-d.documentElement.clientWidth);
+     if(open){
+      w.scrollTo(0,d.documentElement.scrollHeight);await pause();fixed();
+      minClear=Math.min(minClear,q('.nav').getBoundingClientRect().top-p.querySelector('.refs').getBoundingClientRect().bottom);
+      w.scrollTo(0,0);
+     }
+     for(const el of p.querySelectorAll('.tech-panel, .mode-matrix th, .mode-matrix td,.error-sample code,.board-grid,.row,summary,.fusion,.lanes,.estimator,.flight-note,.mobile-modes dd,.atlas nav a,.recap a')){
+      if(el.clientWidth)check(el.scrollWidth<=el.clientWidth+1,width+' clipped '+p.id+' '+el.tagName);
+     }
+    }
+   }
+   check(q('#next').disabled,width+' end');key('Home');check(q('#prev').disabled,width+' start');
+   for(let i=1;i<=10;i++){q('#next').click();state(i)}
+   await pause();state(10);
+   for(let i=9;i>=0;i--){q('#prev').click();state(i)}
+   key('End');state(10);key('ArrowLeft');state(9);key('ArrowRight');state(10);
+   if(width>900){q('.contents a[href="#p06"]').click();await pause()}
+   else{q('select').value='p06';q('select').dispatchEvent(new w.Event('change'))}
+   state(5);check(d.activeElement===visible().querySelector('h1'),width+' heading focus');
+   const b=q('[data-col="2"]');b.click();check(b.getAttribute('aria-pressed')==='true'&&b.closest('.tech-panel').dataset.col==='2',width+' matrix on');
+   b.click();check(b.getAttribute('aria-pressed')==='false'&&all('.mode-matrix tbody tr').length===3,width+' matrix off');
+   const compact=w.matchMedia('(max-width:390px)').matches;
+   const cards=all('.mobile-modes section');
+   check((w.getComputedStyle(q('.mode-matrix')).display==='none')===compact,width+' desktop table breakpoint');
+   check((w.getComputedStyle(q('.mobile-modes')).display!=='none')===compact,width+' mobile cards breakpoint');
+   const trs=all('.mode-matrix tbody tr');
+   cards.forEach((card,i)=>{
+    check(card.querySelector('h3').textContent.replace(/\s/g,'')===trs[i].querySelector('th').textContent.replace(/\s/g,''),width+' mode name '+i);
+    check([...card.querySelectorAll('dd')].every((v,j)=>v.textContent===trs[i].querySelectorAll('td')[j].textContent),width+' mode values '+i);
+   });
+   for(const [page,selector] of [['p01','.atlas nav a'],['p11','.recap a']]){
+    for(const link of all('#'+page+' '+selector)){
+     w.location.hash=page;await pause();link.click();await pause();check(visible().id===link.hash.slice(1),width+' course link '+link.hash);fixed();
+    }
+   }
+   check(overflow<=0,width+' horizontal overflow '+overflow);check(shift<=0.1,width+' nav Δ '+shift);check(minClear>=-1,width+' final content clearance '+minClear);
+   rows.push(width+'×'+height+' '+(errors.length===start?'PASS':'FAIL')+' | nav max Δ '+shift.toFixed(2)+' px | horizontal overflow '+overflow+' px | minimum bottom clearance '+minClear.toFixed(1)+' px');
+   out.textContent=rows.join('\n');
+  }
+  const css=w.getComputedStyle(visible());const duration=css.animationDuration;
+  let reduced=0;
+  function activate(rules){for(const rule of rules){if(rule.media?.mediaText.includes('prefers-reduced-motion')){rule.media.mediaText='all';reduced++}if(rule.cssRules)activate(rule.cssRules)}}
+  for(const sheet of d.styleSheets)activate(sheet.cssRules);
+  check(reduced>0&&css.animationName==='none'&&w.getComputedStyle(q('#next')).transitionDuration==='0s','reduced CSS branch');
+  const resources=w.performance.getEntriesByType('resource').length;
+  check(resources===0,'offline render requests='+resources);
+  rows.push('普通動畫 '+duration+'；強制啟用減少動態 CSS 分支後 '+css.animationName+'；Blob/CSP 下資產請求 '+resources+'。');
+  URL.revokeObjectURL(url);
+ }catch(error){errors.push(String(error))}
+ out.textContent=(errors.length?'FAIL':'PASS')+' | assertions '+assertions+' | errors '+errors.length+'\n'+rows.join('\n')+'\n'+errors.join('\n');
+ this.disabled=false;
+};
+</script></html>

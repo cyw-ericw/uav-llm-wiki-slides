@@ -1,0 +1,35 @@
+{
+  "page": "09",
+  "title": "Loiter：位置保持",
+  "claims": [
+    {
+      "id": "09a",
+      "wiki": "loiter-and-position",
+      "facts": [
+        "S06.1",
+        "S06.2"
+      ],
+      "claim": "水平桿回中會減速並嘗試保持位置，亦維持高度與航向。"
+    },
+    {
+      "id": "09b",
+      "wiki": "loiter-and-position",
+      "facts": [
+        "S03.2",
+        "S03.3",
+        "S06.3"
+      ],
+      "claim": "需要有效位置估測。GPS 是常見來源；非 GPS 例子有有效替代來源與設定原點的條件。"
+    },
+    {
+      "id": "09c",
+      "wiki": "loiter-and-position",
+      "facts": [
+        "S08.3",
+        "S06.3"
+      ],
+      "claim": "光流可提供水平速度，仍需與估測配置相符。"
+    }
+  ],
+  "limit": "未驗證任何實機；裝上光流或僅設好原點都不足以推論能定點。"
+}

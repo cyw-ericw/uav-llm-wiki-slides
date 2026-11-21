@@ -1,0 +1,32 @@
+{
+  "page": "03",
+  "title": "Pixhawk 6C 是什麼？",
+  "claims": [
+    {
+      "id": "03a",
+      "wiki": "flight-stack",
+      "facts": [
+        "S01.2",
+        "S02.1"
+      ],
+      "claim": "飛控板有處理器與內建感測器。"
+    },
+    {
+      "id": "03b",
+      "wiki": "flight-stack",
+      "facts": [
+        "S02.3"
+      ],
+      "claim": "遙測、GPS 與遙控輸入是可供周邊連接的介面。"
+    },
+    {
+      "id": "03c",
+      "wiki": "sensors-and-ekf",
+      "facts": [
+        "S02.2"
+      ],
+      "claim": "加速度計／陀螺儀組合依硬體版本而異。"
+    }
+  ],
+  "limit": "列有 GPS 介面不代表已接上接收器，也不保證定位可用。"
+}

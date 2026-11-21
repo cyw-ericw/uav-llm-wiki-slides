@@ -1,0 +1,66 @@
+/* Course diagrams share the approved graphite panel, axis and annotation colours. */
+.atlas header,.flight-split figure,.fusion{
+ background-color:#182226;
+ background-image:linear-gradient(#96b5ad09 1px,transparent 1px),linear-gradient(90deg,#96b5ad09 1px,transparent 1px);
+ background-size:24px 24px
+}
+.atlas header,.pair,.flight-split,.fusion,.recap,.atlas nav{display:grid}
+.atlas header{grid-template-columns:1fr 1fr;align-items:center;padding:14px 5%}
+.atlas small,.pair small,.sensor-list small,.flight-note>small,.recap small,.estimator small{
+ color:#bce192;font:600 12px/1.5 ui-monospace,monospace;letter-spacing:.09em
+}
+.atlas h2{font-size:clamp(28px,3.3vw,52px);line-height:1.16;margin:8px 0;letter-spacing:-.05em}
+.atlas svg{display:block;width:100%;max-height:150px}
+.atlas nav,.recap{grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--edge)}
+.atlas a,.recap a{display:grid;align-content:center;gap:4px;padding:13px 20px;color:var(--fg);text-decoration:none}
+.atlas a+a,.recap a+a{border-left:1px solid var(--edge)}
+.atlas a:hover,.recap a:hover{background:#29362e}.atlas a strong{font-size:18px}
+.atlas a span,.recap a span,.flight-split figcaption{color:#b4c1c0;font-size:13px}
+.pair{grid-template-columns:1fr auto 1fr;align-items:center;gap:22px;padding:20px clamp(14px,3vw,38px)}
+.pair>span{color:#a4c889;font-size:26px}.pair strong{display:block;font:650 clamp(22px,2.4vw,34px)/1.35 system-ui,sans-serif;color:#edf2ed}
+.pair p,.flight-note p,.estimator p{margin:5px 0;color:var(--sub);line-height:1.55}
+.pair footer{border-top:1px solid var(--edge);margin-top:12px;padding-top:8px;font-size:14px;color:#c9d9c0}
+.sensor-list{margin:0}.sensor-list>div{display:grid;grid-template-columns:1fr 1.35fr;align-items:center;padding:13px 20px;gap:13px}
+.sensor-list>div+div{border-top:1px solid var(--edge)}.sensor-list dt{font-weight:650}.sensor-list small{display:inline-block;min-width:5em}.sensor-list dd{margin:0;color:#cee0d9}
+.fusion{grid-template-columns:minmax(0,1.9fr) 7% minmax(0,.92fr);align-items:center;padding:18px clamp(13px,2vw,26px);gap:0}
+.lanes{min-width:0}.lane-head,.lanes li{display:grid;grid-template-columns:1fr minmax(24px,.32fr) 1fr;align-items:center}
+.lane-head b{font-size:12px;color:#acbebe;letter-spacing:.07em}.lane-head b:last-child{grid-column:3}
+.lanes ul{list-style:none;padding:0;margin:8px 0}.lanes li+li{margin-top:8px}
+.lanes li>div{padding:5px 12px;border-left:2px solid #769ba9;background:#222f35}
+.lanes li>div:last-child{border-color:#b2d48a;background:#27312c}
+.lanes small{display:block;color:#b6c5be;font-size:12px}.lanes strong{font-size:16px}
+.lanes i,.bus{display:block;border-top:1px solid #91ae90;position:relative}
+.lanes i:after,.bus:after{content:"";position:absolute;right:1px;top:-4px;border:solid #a8ce93;border-width:1px 1px 0 0;width:6px;height:6px;transform:rotate(45deg)}
+.bus{margin:16px 3px 0 0}.bus:before{content:"";position:absolute;right:65%;top:-58px;height:116px;width:35%;border:1px solid #7a9481;border-left:0}
+.estimator{border:1px solid #78935f;border-radius:6px;background:#28342c;padding:15px}
+.estimator strong{display:block;font:650 clamp(28px,3.3vw,48px)/1.25 ui-monospace,monospace;color:#d4efb3}
+.estimator p{font-size:15px}
+.flight-split{grid-template-columns:1.65fr 1fr}.flight-split figure{min-width:0;margin:0;padding:8px 12px}
+.flight-view{display:block;width:100%;height:auto;max-height:250px}.flight-view .trace{fill:none;stroke:#bee98c;stroke-width:2}.flight-view .datum{stroke:#a6ce85;fill:none;stroke-width:1.5;stroke-dasharray:5 4}
+.flight-split figcaption{margin:4px 2px}.flight-note{border-left:1px solid var(--edge);padding:clamp(14px,2.5vw,36px);align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.flight-note h2,.recap strong{font:700 clamp(24px,2.4vw,38px)/1.4 "PingFang TC",system-ui,sans-serif;margin:4px 0 9px}
+.flight-note b{color:#cbe6b3;font-size:15px}.flight-note p{font-size:15px}
+.recap{border:0}.recap a{padding-block:20px}
+#p11.v3 .rows{grid-template-columns:repeat(4,minmax(0,1fr))}
+.mobile-modes{display:none}
+@media(max-width:750px){
+ .atlas a,.recap a{padding:10px}.atlas nav span{font-size:12px}.atlas header{padding:10px 16px}.pair{gap:10px}
+ .flight-split{grid-template-columns:1fr}.flight-note{border:0;border-top:1px solid var(--edge);padding:10px 14px}.flight-note h2{margin:0 0 4px;font-size:23px}
+ .flight-view{max-height:205px}.sensor-list>div{padding:10px 13px}.sensor-list small{display:block}
+}
+@media(max-width:570px){
+ .fusion{grid-template-columns:1fr;padding:12px}.bus{width:0;height:20px;border:0;border-left:1px solid #91ae90;margin:0 auto}.bus:before{display:none}.bus:after{transform:rotate(135deg);right:-3px;top:auto;bottom:2px}
+ .estimator{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:0 16px;padding:8px 13px}.estimator small{grid-column:1}.estimator strong{grid-column:1;font-size:25px}.estimator p{grid-column:2;grid-row:1 / span 2}
+ .pair{grid-template-columns:1fr;gap:4px}.pair>span{display:none}.pair>div+span+div{border-top:1px solid var(--edge);padding-top:10px;margin-top:8px}.pair footer{border:0;padding:0;margin-top:4px}
+ #p01 .atlas nav{grid-template-columns:1fr}.atlas nav a{grid-template-columns:5em 1fr;gap:3px;align-items:center}.atlas nav span{grid-column:2}.atlas nav a+a{border:0;border-top:1px solid var(--edge)}
+ .recap{grid-template-columns:1fr}.recap a{grid-template-columns:6em 1fr auto;align-items:center;gap:3px}.recap a+a{border:0;border-top:1px solid var(--edge)}.recap strong{font-size:22px;margin:0}
+}
+@media(max-width:390px){
+ .mode-matrix{display:none}.mobile-modes{display:grid;padding:10px;gap:9px}
+ .mobile-modes section{border:1px solid var(--edge);border-radius:5px;overflow:hidden}
+ .mobile-modes h3{background:#24312d;color:var(--fg);margin:0;padding:7px 10px;font:650 17px/1.4 ui-monospace,monospace}
+ .mobile-modes h3 small{font:500 13px system-ui,sans-serif;color:#c1d5be}
+ .mobile-modes dl{margin:0}.mobile-modes dl div{display:grid;grid-template-columns:6.5em minmax(0,1fr);padding:4px 10px;font-size:14px}
+ .mobile-modes dt{color:#b0bfbd}.mobile-modes dd{margin:0}
+ .tech-panel[data-col="1"] [data-field="1"],.tech-panel[data-col="2"] [data-field="2"],.tech-panel[data-col="3"] [data-field="3"]{background:#344431;color:#d9f1be}
+}

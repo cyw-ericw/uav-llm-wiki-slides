@@ -1,0 +1,87 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>workflow｜UAV LLM Wiki</title><link rel="stylesheet" href="site.css"></head><body><header class="top"><nav class="top-inner"><strong>UAV LAB <span style="color:#83c72e">/ Wiki</span></strong><a href="index.html">首頁</a><a href="slides/deck.html">HTML 簡報</a><a href="wiki/index.html">Wiki</a><a href="workflow-view.html">Graph</a><a href="verification-view.html">執行反思</a></nav></header><main class="wrap"><div class="eyebrow">UAV LAB WIKI · WEEK 10</div><article class="md"><h1>Graph／Loop 設計 v1.0</h1>
+<pre><code class="language-mermaid">flowchart TD
+  A[需求確認] --&gt; B[官方來源 ingest]
+  B --&gt; C[Wiki 概念筆記]
+  C --&gt; D{覆蓋率與來源檢查}
+  D --&gt;|缺漏| B
+  D --&gt;|通過| E[製作來源證據卡]
+  E --&gt; F[教學大綱]
+  F --&gt; G{人工確認大綱}
+  G --&gt;|退回| F
+  G --&gt;|通過| H[逐頁講稿]
+  H --&gt; I{忠實度審查}
+  I --&gt;|單頁退修| H
+  I --&gt;|證據不足| E
+  I --&gt;|通過| J[HTML 渲染]
+  J --&gt; K{連結與版面檢查}
+  K --&gt;|局部修正| J
+  K --&gt;|通過| L[輸出報告與部署]
+</code></pre>
+<h2>節點／輸入／輸出／失敗分支</h2>
+<table>
+<thead>
+<tr>
+<th>節點</th>
+<th>輸入</th>
+<th>輸出</th>
+<th>檢查</th>
+<th>退回</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ingest</td>
+<td>官方文件、<code>raw/source_cards.json</code></td>
+<td><code>wiki/sources/</code>, <code>wiki/log.md</code></td>
+<td>來源 ID、URL、文章數至少 5</td>
+<td>補來源</td>
+</tr>
+<tr>
+<td>Wiki</td>
+<td>已 ingest 來源卡</td>
+<td><code>wiki/concepts/</code></td>
+<td>每條重要結論有來源 ID</td>
+<td>來源或概念頁</td>
+</tr>
+<tr>
+<td>Evidence</td>
+<td>Wiki 頁</td>
+<td><code>slides/cards/</code></td>
+<td>重點及來源對應</td>
+<td>Wiki</td>
+</tr>
+<tr>
+<td>Outline</td>
+<td>教學目標與證據卡</td>
+<td><code>slides/outline.md</code></td>
+<td>概念順序、沒有內容缺口；人工審核</td>
+<td>Outline 或 Evidence</td>
+</tr>
+<tr>
+<td>Draft</td>
+<td>核准大綱和 Evidence</td>
+<td><code>slides/drafts/</code></td>
+<td>專業術語、事實忠實度</td>
+<td>該頁 Draft</td>
+</tr>
+<tr>
+<td>Render</td>
+<td>通過審查的文字</td>
+<td><code>slides/deck.html</code></td>
+<td>HTML 結構、連結、排版</td>
+<td>只修 HTML/CSS</td>
+</tr>
+<tr>
+<td>Report</td>
+<td>所有檢查輸出</td>
+<td><code>slides/report.md</code></td>
+<td>真實 PASS/FAIL、重測、反思</td>
+<td>相應節點</td>
+</tr>
+</tbody>
+</table>
+<h2>停止條件</h2>
+<p>每個局部 Loop 最多 3 輪；失敗時保留錯誤報告並停止；不可無限制重新生成，也不可把未做的檢查寫為 PASS。</p>
+<h2>第二階段實際採用的關卡</h2>
+<p>圖中的人工關卡已於 2026-11-21 由使用者核准。接續時先登錄此決定，再執行 Evidence。Coverage 先驗 Wiki 來源、概念、事實編號與頁碼；Faithfulness 再由未寫稿的審查者判讀「該條摘錄能否支持這句話」。若句子本身正確而指向的摘錄太籠統，只退回該頁 Evidence。Render 讀取通過審查的資料指紋；若前置資料有變動，須重新審查。Report 先輸出離線驗收版；Publish 等待使用者驗收。</p>
+</article><p class="small" style="margin-top:48px;border-top:1px solid #3c4840;padding-top:20px">公開閱讀版由 Markdown 產生，原始筆記與測試檔保留在專案中。官方來源為外部網站。</p></main></body></html>

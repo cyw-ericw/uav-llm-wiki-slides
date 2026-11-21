@@ -1,0 +1,43 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>flight-modes｜UAV LLM Wiki</title><link rel="stylesheet" href="../../site.css"></head><body><header class="top"><nav class="top-inner"><strong>UAV LAB <span style="color:#83c72e">/ Wiki</span></strong><a href="../../index.html">首頁</a><a href="../../slides/deck.html">HTML 簡報</a><a href="../../wiki/index.html">Wiki</a><a href="../../workflow-view.html">Graph</a><a href="../../verification-view.html">執行反思</a></nav></header><main class="wrap"><div class="eyebrow">UAV LAB WIKI · WEEK 10</div><article class="md"><h1>常見飛行模式的比較</h1>
+<h2>核心概念</h2>
+<p>Stabilize 主要穩定 Roll、Pitch 姿態，但高度須由飛手控制；AltHold 進一步提供自動高度維持；Loiter 再加入位置保持，因而需要可靠的水平位置估測。</p>
+<h2>對照</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>主要功能</th>
+<th>水平位置估測要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stabilize</td>
+<td>姿態自動回正</td>
+<td>不要求</td>
+</tr>
+<tr>
+<td>AltHold</td>
+<td>姿態穩定及高度維持</td>
+<td>不要求</td>
+</tr>
+<tr>
+<td>Loiter</td>
+<td>高度與水平位置保持</td>
+<td>需要可靠定位來源</td>
+</tr>
+</tbody>
+</table>
+<h2>初學者例子</h2>
+<p>橫滾與俯仰桿回中後，Stabilize 會回平；風吹仍可能引起水平漂移。<a href="../sources/S04.html">S04</a> AltHold 的油門桿指定升降速度，在中立區維持高度。氣壓變動可能影響定高。<a href="../sources/S05.html">S05</a> Loiter 則在水平桿回中後減速並嘗試定點。<a href="../sources/S06.html">S06</a></p>
+<h2>常見誤解</h2>
+<p>「Loiter 必定要求 GPS」過度簡化：某些其他定位系統亦可滿足條件，但必須正確配置。</p>
+<h2>來源與連結</h2>
+<ul>
+<li><a href="../sources/S03.html">S03</a>｜<a href="https://ardupilot.org/copter/docs/flight-modes.html">Flight Modes</a></li>
+<li><a href="../sources/S04.html">S04</a>｜<a href="https://ardupilot.org/copter/docs/stabilize-mode.html">Stabilize</a></li>
+<li><a href="../sources/S05.html">S05</a>｜<a href="https://ardupilot.org/copter/docs/altholdmode.html">AltHold</a></li>
+<li><a href="../sources/S06.html">S06</a>｜<a href="https://ardupilot.org/copter/docs/loiter-mode.html">Loiter</a></li>
+<li>相關：<a href="loiter-and-position.html">loiter-and-position</a></li>
+</ul>
+</article><p class="small" style="margin-top:48px;border-top:1px solid #3c4840;padding-top:20px">公開閱讀版由 Markdown 產生，原始筆記與測試檔保留在專案中。官方來源為外部網站。</p></main></body></html>

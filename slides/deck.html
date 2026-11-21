@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAV 入門教學｜無人機實驗室</title>
+<style>
+:root{--ink:#153c37;--dark:#123b35;--muted:#4e6560;--paper:#f9f8f1;--line:#cdd7cb;--amber:#f5be69;--soft:#e5eee2;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 "PingFang TC","Noto Sans CJK TC","Microsoft JhengHei",system-ui,sans-serif}button,select,summary{font:inherit}button,select,summary,a{touch-action:manipulation}button,summary,select{cursor:pointer}button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #be7220;outline-offset:3px}a{color:inherit;text-underline-offset:.23em}.app{max-width:1800px;min-height:100vh;margin:auto;display:grid;grid-template-columns:clamp(220px,21vw,310px) minmax(0,1fr)}aside{background:var(--dark);color:#f3f4e9;padding:30px 16px}aside .brand{font-size:22px;font-weight:760;letter-spacing:.03em;margin:0 10px}.edition{font-size:12px;letter-spacing:.1em;color:#bcd3c6;margin:4px 10px 28px}.contents{display:grid;gap:3px}.contents a{text-decoration:none;display:grid;grid-template-columns:27px 1fr;align-items:baseline;gap:4px;padding:8px 10px;border-radius:5px;font-size:14px;line-height:1.45;color:#e2eae2}.contents a:hover{background:#245046}.contents a[aria-current=page]{background:#dcebd6;color:#173d31;font-weight:700}.num,.counter,.chapter{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums}.num{font-size:12px;opacity:.83}.stage{min-width:0;padding:24px clamp(20px,4vw,68px) 16px}.top,.nav{display:flex;justify-content:space-between;align-items:center;gap:10px}.top{padding-bottom:12px;border-bottom:1px solid var(--line);color:var(--muted);font-size:14px}.chapter{font-weight:700;color:var(--ink)}.track{height:3px;background:#dde3d7}.track i{height:100%;display:block;background:#c4822e}.mobile{display:none}.frame{margin:23px auto 0;max-width:1080px}.frame[hidden]{display:none}h1{font-size:clamp(30px,3.15vw,58px);line-height:1.23;letter-spacing:-.04em;margin:0 0 9px;overflow-wrap:anywhere}h1:focus{outline:none}.lead{font-size:clamp(17px,1.5vw,24px);line-height:1.5;margin:0 0 18px;color:#3a554c}.rows{border-top:2px solid var(--ink)}.row{display:grid;grid-template-columns:minmax(155px,28%) minmax(0,1fr);align-items:baseline;gap:20px;padding:14px 0;border-bottom:1px solid var(--line)}.row h2{font-size:clamp(16px,1.45vw,22px);margin:0}.row p{font-size:clamp(16px,1.32vw,21px);margin:0}.first .rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.first .row{display:block}.first .row h2{margin:0 0 7px}.practice{background:var(--soft);padding:13px 16px;border-left:4px solid #598061;margin:16px 0 10px;border-radius:0 5px 5px 0}.practice summary{font-weight:650}.hint{color:var(--muted);font-size:13px;margin-right:8px}.practice p{margin:9px 0 1px}.refs{font-size:14px;color:var(--muted)}.refs summary{width:fit-content;padding:5px 0}.refs ul{padding-left:20px}.refs li{margin:6px 0}.refs a{font-weight:640}.nav{max-width:1080px;margin:16px auto 0;border-top:1px solid var(--line);padding-top:12px}.nav button{background:var(--ink);color:white;border:0;padding:8px 15px;border-radius:5px;font-weight:600}.nav button:disabled{background:#dce1d6;color:#647169;cursor:default}.nav small{color:var(--muted)}.counter{white-space:nowrap}p,summary,li{overflow-wrap:anywhere}
+@media(min-width:1450px){.frame{margin-top:45px}.row{padding:20px 0}.practice{margin-top:26px}}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{display:none}.mobile{display:block;max-width:60%;color:var(--ink);border:1px solid var(--line);background:var(--paper);padding:5px 3px;border-radius:4px;font-size:14px;min-width:0}.top>.course{display:none}.stage{padding:16px clamp(14px,4vw,30px)}.frame{margin-top:20px}}
+@media(max-width:580px){.first .rows{display:block}.row,.first .row{display:block;padding:10px 0}.row h2,.first .row h2{margin-bottom:3px}.frame{margin-top:15px}.practice{padding:10px 12px}.nav small{display:none}.top{flex-wrap:wrap}.lead{margin-bottom:12px}.chapter{font-size:13px}.refs{font-size:14px}}
+/* Phase 2 UX patch: keep both paging targets at a constant viewport coordinate.
+   The original footer was in document flow and moved as slides/details changed height. */
+.stage{padding-bottom:calc(92px + env(safe-area-inset-bottom, 0px))}
+.nav{
+ position:fixed;
+ left:calc(max(0px, (100vw - 1800px)/2) + clamp(220px,21vw,310px));
+ right:max(0px, (100vw - 1800px)/2);
+ bottom:0;
+ max-width:none;
+ margin:0;
+ padding:12px clamp(20px,4vw,68px) calc(12px + env(safe-area-inset-bottom, 0px));
+ background:var(--paper);
+ border-top:1px solid var(--line);
+ box-shadow:0 -5px 16px rgba(21,60,55,.055);
+ z-index:30;
+}
+@media(max-width:900px){
+ .stage{padding-bottom:calc(91px + env(safe-area-inset-bottom, 0px))}
+ .nav{left:0;right:0;padding:10px clamp(14px,4vw,30px) calc(10px + env(safe-area-inset-bottom, 0px))}
+}
+@media print{aside,.top,.track,.nav,.refs,select{display:none!important}.app{display:block}.stage{padding:0}.frame,.frame[hidden]{display:block;break-after:page}.practice p{display:block}.frame:last-of-type{break-after:auto}}
+
+/* Visual design v2: source-neutral visual system, no technical claims altered */
+:root{--ink:#153b3b;--dark:#102b34;--muted:#4d6766;--paper:#f4f7f7;--line:#dce6e7;--soft:#e8f4ec;--accent:#13a68d;--accent-dark:#076f67;--haze:#daf5ec}
+body{background:#eaf0f1;color:var(--ink);font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}
+.app{max-width:none;grid-template-columns:clamp(230px,21vw,316px) minmax(0,1fr)}
+aside{position:sticky;top:0;height:100vh;padding:36px 18px 22px;background:linear-gradient(160deg,#0d2d38 0%,#103b40 62%,#0a3e3a 100%);overflow-y:auto;scrollbar-width:thin;scrollbar-color:#35716e transparent}
+aside::before{content:"";position:absolute;top:-94px;right:-73px;width:270px;height:270px;border:1px solid #c4eedd33;border-radius:50%;box-shadow:0 0 0 37px #b4e5d410,0 0 0 85px #b4e5d408;pointer-events:none}
+aside .brand{position:relative;margin:0 10px;padding-left:34px;font-size:22px;font-weight:800;letter-spacing:.04em;color:#fbfdf9}
+aside .brand::before{content:"✦";position:absolute;left:0;top:2px;width:25px;height:25px;display:grid;place-items:center;border-radius:9px;background:#3fd4ad;color:#0b3535;font-size:16px}
+.edition{position:relative;margin:8px 10px 32px;color:#91c8ba;letter-spacing:.17em}
+.contents{position:relative;gap:4px}
+.contents a{position:relative;align-items:center;border-radius:11px;padding:10px 11px;color:#dcebe8;transition:background .18s,color .18s,transform .18s}
+.contents a:hover{background:#ffffff1b;transform:translateX(3px)}
+.contents a[aria-current=page]{background:#d8f6e9;color:#12403b;box-shadow:0 5px 18px #00000018}
+.contents a[aria-current=page]::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:#10aa91}
+.contents .num{font-size:12px;font-weight:750;opacity:.65}
+.stage{padding:25px clamp(23px,4.2vw,70px) 105px;background:linear-gradient(125deg,#f5f8f8 0%,#f5f9f7 75%,#eef5f4 100%);min-height:100vh}
+.top{border-bottom:0;padding-bottom:13px;color:#657a78;letter-spacing:.025em}
+.top .course{font-weight:650}
+.chapter{font-size:13px;font-weight:770;background:#e1efeb;padding:4px 13px;border-radius:30px;color:#2d7067}
+.counter{font-weight:780;font-size:15px;color:#255f5b}
+.track{height:5px;background:#dae9e5;border-radius:20px;overflow:hidden}
+.track i{background:linear-gradient(90deg,#17b79a,#49c8c1);border-radius:20px;transition:width .24s ease}
+.frame{--accent:#16aa92;--accent-dark:#0a706a;--haze:#dff7ee;isolation:isolate;position:relative;margin:23px auto 0;max-width:1180px;padding:33px 0 4px}
+.frame:is(#p02,#p03,#p04,#p05){--accent:#2681b6;--accent-dark:#235e89;--haze:#e1f1fa}
+.frame:is(#p06,#p07,#p08,#p09){--accent:#5d82c5;--accent-dark:#405a9c;--haze:#e7ebfb}
+.frame:is(#p10,#p11){--accent:#b56d46;--accent-dark:#98522c;--haze:#f9ebdd}
+.frame::before{content:"";position:absolute;z-index:-2;top:0;left:-20px;right:-20px;height:216px;background:radial-gradient(circle at 90% 15%,#ffffff88,transparent 48%),linear-gradient(112deg,#ffffff 0%,var(--haze) 100%);border:1px solid #ffffffc0;border-radius:26px;box-shadow:0 16px 40px #184b4610}
+.frame::after{content:attr(data-chapter) "  ·  UAV LAB";position:absolute;top:12px;left:6px;color:var(--accent-dark);font-size:11px;font-weight:780;letter-spacing:.15em}
+.frame h1{position:relative;z-index:1;max-width:70%;font-weight:820;line-height:1.14;font-size:clamp(30px,3.4vw,55px);letter-spacing:-.045em;margin:12px 0 14px;color:#173d41}
+.frame .lead{position:relative;z-index:1;max-width:67%;font-size:clamp(17px,1.6vw,22px);color:#446260;font-weight:540;line-height:1.55;margin-bottom:55px}
+.hero-art{position:absolute;right:1px;top:13px;width:245px;height:174px;color:var(--accent-dark);opacity:.85;z-index:0;pointer-events:none;transform:rotate(2deg)}
+.hero-art svg{display:block;width:100%;height:100%;filter:drop-shadow(0 6px 5px #1a575611)}
+.rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;border:none;margin:0 0 21px;counter-reset:insight}
+.row,.first .row{display:flex;flex-direction:column;align-items:stretch;gap:9px;min-width:0;min-height:187px;padding:19px 20px 18px;border-radius:18px;border:1px solid #e3e9e8;background:#fff;box-shadow:0 7px 23px #163b3a0b;border-bottom:1px solid #e3e9e8;counter-increment:insight;transition:box-shadow .18s,transform .18s}
+.row::before{content:"0" counter(insight);display:block;align-self:flex-start;font:800 12px/1.8 ui-monospace,monospace;letter-spacing:.06em;color:var(--accent-dark);background:var(--haze);padding:0 11px;border-radius:10px}
+.row h2,.first .row h2{font-size:clamp(17px,1.45vw,20px);font-weight:800;line-height:1.4;margin:1px 0 0;color:#194444}
+.row p{font-size:clamp(16px,1.31vw,20px);line-height:1.6;color:#3d5957;margin:0}
+.first .rows{gap:15px}
+.practice{background:#e5f3ed;border:1px solid #d1e9dd;border-left:4px solid #21a184;padding:13px 17px;margin:14px 0 8px;border-radius:11px}
+.practice summary{font-weight:750;color:#175f53}
+.practice .hint{display:inline-flex;background:#c9e7dc;border-radius:7px;padding:3px 7px;margin-right:9px;color:#216859;font-weight:750}
+.practice p{margin:11px 0 3px;font-size:16px;line-height:1.7}
+.refs{font-size:14px;color:#627c79;padding:0 3px}
+.refs summary{font-size:13px;font-weight:650;padding:8px 0}
+.refs[open]{background:#f0f7f5;border:1px solid #d8e9e2;border-radius:11px;padding:8px 15px;margin-top:8px}
+.refs li{line-height:1.68}
+.refs a{color:#246b66;text-decoration-thickness:1px}
+.nav{left:clamp(230px,21vw,316px);right:0;padding:13px clamp(23px,4.2vw,70px) calc(13px + env(safe-area-inset-bottom, 0px));background:#f8fbfaee;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 -8px 28px #163b3a11}
+.nav button{border:1px solid #0b6d67;border-radius:12px;padding:10px 20px;background:#0d5956;font-weight:800;box-shadow:0 3px 0 #0a4744;transition:transform .12s,box-shadow .12s,background .12s}
+.nav button:not(:disabled):hover{background:#087a6e;box-shadow:0 5px 0 #07554d;transform:translateY(-2px)}
+.nav button:not(:disabled):active{box-shadow:0 1px 0 #07554d;transform:translateY(2px)}
+.nav button:disabled{border-color:#d9e5e1;background:#e5ede9;color:#899d99;box-shadow:none}
+.nav small{font-size:13px;color:#7b908d}
+@media(min-width:1450px){.frame{margin-top:30px}.row{min-height:220px;padding:25px 24px}.practice{margin-top:20px}}
+@media(max-width:1180px){.frame h1,.frame .lead{max-width:68%}.hero-art{width:190px}.rows{gap:11px}.row{padding:16px 14px;min-height:220px}.row p{font-size:16px}}
+@media(max-width:900px){aside{display:none}.app{grid-template-columns:1fr}.stage{padding:16px clamp(14px,4vw,30px) 105px}.frame{margin-top:12px;padding-top:30px}.nav{left:0;right:0;padding:10px clamp(14px,4vw,30px) calc(10px + env(safe-area-inset-bottom, 0px))}.row{min-height:192px}}
+@media(max-width:700px){.rows,.first .rows{grid-template-columns:1fr;gap:10px}.row,.first .row{min-height:0;padding:15px 18px}.frame h1,.frame .lead{max-width:none}.frame h1{font-size:clamp(28px,6vw,40px)}.frame .lead{font-size:17px;margin-bottom:53px}.frame::before{height:200px;left:-9px;right:-9px;border-radius:19px}.hero-art{opacity:.17;right:0;top:20px;width:190px}.frame::after{left:4px}.row p{font-size:16px}}
+@media(max-width:420px){.frame{padding-top:32px}.frame::before{height:228px}.frame .lead{margin-bottom:54px}.nav small{display:none}.nav button{padding:9px 13px}.top{gap:7px}.chapter{font-size:11px;padding:4px 8px}}
+@media(prefers-reduced-motion:reduce){.contents a,.row,.nav button,.track i{transition:none!important}}
+@media print{.frame{break-after:page;padding-top:25px}.frame::before{print-color-adjust:exact}.hero-art{position:absolute;right:0;top:10px}.rows{grid-template-columns:repeat(3,minmax(0,1fr))}.row{min-height:auto}}
+/* Shared controls keep their original dimensions throughout all eleven slides. */
+.nav button:not(:disabled):hover,.nav button:not(:disabled):active{transform:none}
+.nav button{transition:background-color .14s,color .14s}
+@media screen{
+.workshop{--glass:#171e23;--edge:#344147;--fg:#edf2ee;--sub:#b6c0c3;--green:#bbe87e;--ink:#eef1ec;color:var(--fg);background:#101619;font-family:"PingFang TC","Noto Sans CJK TC","Microsoft JhengHei",system-ui,sans-serif}
+.workshop aside{background:#101619;border-right:1px solid #304042;scrollbar-color:#506365 #101619}
+.workshop aside::before,.workshop aside::after{display:none}
+.workshop aside .brand{color:#f2f5f0;font-size:21px;letter-spacing:.025em}
+.workshop aside .brand::before{content:"";border-radius:0;background:repeating-linear-gradient(110deg,transparent 0 3px,#b7ed80 3px 6px,transparent 6px 9px);width:23px;height:18px;top:7px}
+.workshop .edition{font-size:12px;color:#a5b5b2}
+.workshop .contents a{border-radius:3px;color:#bac4c4;font-weight:500;transform:none}
+.workshop .contents a[aria-current=page]{color:#eef8dc;background:#28362c;box-shadow:none}
+.workshop .contents a[aria-current=page]::before{background:var(--green)}
+.workshop .contents a[aria-current=page] .num{color:var(--green);opacity:1}
+.workshop .stage{background:#151b20;color:var(--fg)}
+.workshop .top,.workshop .top .course,.workshop .counter{color:#bbc6c7}
+.workshop .chapter,.workshop select{color:#dceacb;background:#24302c;border:1px solid #435342}
+.workshop .track{background:#30393d}.workshop .track i{background:var(--green)}
+.workshop .track i,.workshop .contents a{transition:background-color .14s}
+.frame.v3{max-width:1180px;margin:21px auto 0;padding:0;color:var(--fg);animation:page-enter .16s ease-out}
+@keyframes page-enter{from{opacity:.76}to{opacity:1}}
+.frame.v3::before,.frame.v3::after{display:none}
+.frame.v3 h1{color:var(--fg);font-size:clamp(31px,3.15vw,54px);font-weight:740;letter-spacing:-.04em;line-height:1.22;max-width:none;margin:0 0 7px}
+.frame.v3 .lead{max-width:none;font-size:clamp(16px,1.3vw,21px);font-weight:400;color:var(--sub);margin:0 0 18px}
+.tech-panel{border:1px solid var(--edge);border-radius:8px;overflow:hidden;background:#1b2329}
+.panel-title{display:flex;gap:12px;justify-content:space-between;align-items:center;padding:10px 18px;background:#20292f;border-bottom:1px solid var(--edge)}
+.panel-title b{font-size:16px;font-weight:650;color:var(--fg)}.panel-title small,.part-group h3,.lookup small,.error-sample small,.condition b{font-size:12px;letter-spacing:.05em}
+.panel-title small{font-family:ui-monospace,monospace;color:#b6c4c6}
+.board-layout{display:grid;grid-template-columns:1.55fr 1fr}
+.board-grid{position:relative;min-width:0;margin:0;padding:4px 6px 28px;background-color:#192227;background-image:linear-gradient(#87a9a50c 1px,transparent 1px),linear-gradient(90deg,#87a9a50c 1px,transparent 1px);background-size:21px 21px}
+.board-grid svg{display:block;width:100%;height:clamp(185px,18vw,263px)}
+.board-grid figcaption{position:absolute;left:16px;bottom:6px;color:#b6c4c5;font-size:12px}
+.parts{display:flex;flex-direction:column;justify-content:center;padding:17px 22px;border-left:1px solid var(--edge)}
+.part-group+.part-group{border-top:1px solid var(--edge);margin-top:14px;padding-top:13px}
+.part-group h3{margin:0 0 7px;color:var(--green);font-size:14px}
+.part-group:nth-child(2) h3{color:#b5d2e5}
+.part{display:inline-block;color:#e5eae7;font-size:15px;padding:3px 9px;margin:0 4px 5px 0;border:1px solid #495750;border-radius:3px;background:#252e30}
+.part-group:nth-child(2) .part{border-style:dashed;border-color:#56646c}
+.frame.v3 .rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:16px 0;gap:0}
+.frame.v3 .row{min-height:0;gap:5px;color:var(--fg);padding:1px 17px;border:0;border-left:1px solid #38444b;border-radius:0;background:transparent;box-shadow:none;transform:none}
+.frame.v3 .row:first-child{padding-left:0;border:0}
+.frame.v3 .row::before{display:none}
+.frame.v3 .row h2{font-size:17px;color:#ebf0ec;margin:0}
+.frame.v3 .row p{font-size:clamp(16px,1.15vw,18px);color:var(--sub);line-height:1.55}
+.focus-cols{display:flex;align-items:center;gap:7px;padding:10px 16px;flex-wrap:wrap;border-bottom:1px solid var(--edge)}
+.focus-cols span{color:var(--sub);font-size:13px;margin-right:4px}
+.focus-cols button{background:#242e32;border:1px solid #4a565c;color:#dce3df;border-radius:4px;padding:3px 10px;font-size:14px}
+.focus-cols button[aria-pressed=true]{color:#1e2d19;background:var(--green);border-color:var(--green)}
+.mode-matrix{border-collapse:collapse;width:100%;table-layout:fixed;text-align:left}
+.mode-matrix th,.mode-matrix td{padding:10px 14px;vertical-align:middle;border-bottom:1px solid var(--edge);line-height:1.4}
+.mode-matrix thead th{color:var(--sub);font-size:13px;font-weight:550;background:#172025}
+.mode-matrix tbody th{color:#edf3e9;font:600 clamp(16px,1.4vw,23px)/1.25 ui-monospace,monospace}
+.mode-matrix tbody th small{display:block;font:400 12px/1.6 "PingFang TC",system-ui,sans-serif;color:#adbbb6}
+.mode-matrix td{font-size:clamp(15px,1.22vw,19px);color:#dae2e0}
+.mode-matrix tbody tr:last-child td:last-child{color:var(--green);font-weight:670}
+.tech-panel[data-col="1"] .mode-matrix :is(td,th):nth-child(2),.tech-panel[data-col="2"] .mode-matrix :is(td,th):nth-child(3),.tech-panel[data-col="3"] .mode-matrix :is(td,th):nth-child(4){color:#d7f6b0;background:#2b382e}
+.condition{margin:0;padding:9px 16px;color:#d6dfd4;font-size:14px;background:#202b26}.condition b{color:var(--green)}
+.error-sample{display:flex;align-items:center;gap:20px;padding:28px 25px;background:linear-gradient(110deg,#302a22,#202529 80%);border-left:3px solid #e9b668}
+.warn-icon{width:44px;height:44px;display:grid;place-content:center;border:1px solid #cfaa72;color:#f5c683;border-radius:50%;font:600 28px/1 ui-monospace,monospace;flex-shrink:0}
+.error-sample small{color:#ebbd80;display:block;margin-bottom:7px}
+.error-sample code{font:550 clamp(20px,2.4vw,36px)/1.32 ui-monospace,"SFMono-Regular",monospace;color:#f5f0e8;overflow-wrap:anywhere}
+.lookup{display:flex;gap:20px;align-items:center;padding:18px 26px;border-top:1px solid var(--edge)}.lookup small{color:var(--sub);display:block}.lookup b{font-size:clamp(16px,1.35vw,22px)}.lookup .arrow{color:var(--green);font-weight:bold}
+#p10.v3 .row{counter-increment:case-step}#p10.v3 .rows{counter-reset:case-step}#p10.v3 .row::before{display:block;content:counter(case-step,decimal-leading-zero);font:600 13px ui-monospace,monospace;background:none;padding:0;color:#c0e799}
+.v3 .practice,.v3 .refs,.v3 .refs[open]{margin:7px 0;padding:0 13px;background:#1b2429;color:#e2e9e6;border:1px solid var(--edge);border-radius:5px}
+.v3 .practice summary,.v3 .refs summary{color:#dfe8e0;width:auto;font-size:15px;padding:10px 0;line-height:1.55}.v3 .practice .hint{background:#2b3930;color:#c3e5a8;font-size:12px;margin-right:8px}
+.v3 .refs summary{color:#b9c9c9;font-weight:550}.v3 .refs ul{padding-left:22px}.v3 .refs p{color:#c5cfcd}
+.v3 .refs a{color:#c7e2aa}.v3 .practice p{color:#e2e9e6;margin-bottom:12px}
+.workshop .nav{background:#12191def;border-top-color:#354147;box-shadow:none}
+.workshop .nav button{box-shadow:none;background:#252f34;color:#f2f6ee;border:1px solid #56625f;border-radius:5px}
+.workshop .nav #next{background:#b9e782;border-color:#b9e782;color:#1d2b17}
+.workshop .nav button:not(:disabled):hover{background:#35443b;color:white}
+.workshop .nav #next:not(:disabled):hover{background:#cdf099;color:#162211}
+.workshop .nav small{color:#afbfbd}
+.workshop :focus-visible{outline:2px solid #c4f4a1;outline-offset:2px}
+@media(max-width:750px){
+ .board-layout{grid-template-columns:1fr}.board-grid svg{height:170px}.parts{display:grid;grid-template-columns:1fr 1fr;gap:12px;border:0;border-top:1px solid var(--edge);padding:12px}
+ .part-group+.part-group{margin:0;padding:0 0 0 10px;border:0;border-left:1px solid var(--edge)}
+ .part{padding:2px 5px;font-size:14px}.frame.v3 .rows{display:block}.frame.v3 .row,.frame.v3 .row:first-child{padding:8px 0;border:0;border-bottom:1px solid var(--edge)}
+ .frame.v3{margin-top:14px}.frame.v3 .lead{margin-bottom:12px}
+ .mode-matrix th,.mode-matrix td{padding:7px 5px}.mode-matrix tbody th{font-size:15px}.mode-matrix td{font-size:14px}
+ .focus-cols{gap:4px;padding:7px}.focus-cols button{font-size:13px;padding:4px}.focus-cols span{font-size:12px;margin:0}
+ .panel-title{padding:8px 10px;flex-wrap:wrap;gap:4px 10px}.panel-title small{font-size:11px}
+ .error-sample,.lookup{padding:16px 12px;gap:9px}.warn-icon{width:30px;height:30px;font-size:20px}.lookup .arrow{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.frame.v3,.workshop *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+}
+/* Keep the viewport and control boxes stable when disclosures add a scrollbar. */
+@media screen {
+ html { overflow-y:scroll }
+ .nav button { width:112px; height:46px; padding:0; font:700 16px/1.4 "PingFang TC","Microsoft JhengHei",system-ui,sans-serif }
+ @media(max-width:420px){
+  .nav button { width:96px; height:44px }
+  .mode-matrix th:first-child { width:29% }
+  .mode-matrix tbody th { font-size:14px }
+ }
+}
+
+/* Course diagrams share the approved graphite panel, axis and annotation colours. */
+.atlas header,.flight-split figure,.fusion{
+ background-color:#182226;
+ background-image:linear-gradient(#96b5ad09 1px,transparent 1px),linear-gradient(90deg,#96b5ad09 1px,transparent 1px);
+ background-size:24px 24px
+}
+.atlas header,.pair,.flight-split,.fusion,.recap,.atlas nav{display:grid}
+.atlas header{grid-template-columns:1fr 1fr;align-items:center;padding:14px 5%}
+.atlas small,.pair small,.sensor-list small,.flight-note>small,.recap small,.estimator small{
+ color:#bce192;font:600 12px/1.5 ui-monospace,monospace;letter-spacing:.09em
+}
+.atlas h2{font-size:clamp(28px,3.3vw,52px);line-height:1.16;margin:8px 0;letter-spacing:-.05em}
+.atlas svg{display:block;width:100%;max-height:150px}
+.atlas nav,.recap{grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--edge)}
+.atlas a,.recap a{display:grid;align-content:center;gap:4px;padding:13px 20px;color:var(--fg);text-decoration:none}
+.atlas a+a,.recap a+a{border-left:1px solid var(--edge)}
+.atlas a:hover,.recap a:hover{background:#29362e}.atlas a strong{font-size:18px}
+.atlas a span,.recap a span,.flight-split figcaption{color:#b4c1c0;font-size:13px}
+.pair{grid-template-columns:1fr auto 1fr;align-items:center;gap:22px;padding:20px clamp(14px,3vw,38px)}
+.pair>span{color:#a4c889;font-size:26px}.pair strong{display:block;font:650 clamp(22px,2.4vw,34px)/1.35 system-ui,sans-serif;color:#edf2ed}
+.pair p,.flight-note p,.estimator p{margin:5px 0;color:var(--sub);line-height:1.55}
+.pair footer{border-top:1px solid var(--edge);margin-top:12px;padding-top:8px;font-size:14px;color:#c9d9c0}
+.sensor-list{margin:0}.sensor-list>div{display:grid;grid-template-columns:1fr 1.35fr;align-items:center;padding:13px 20px;gap:13px}
+.sensor-list>div+div{border-top:1px solid var(--edge)}.sensor-list dt{font-weight:650}.sensor-list small{display:inline-block;min-width:5em}.sensor-list dd{margin:0;color:#cee0d9}
+.fusion{grid-template-columns:minmax(0,1.9fr) 7% minmax(0,.92fr);align-items:center;padding:18px clamp(13px,2vw,26px);gap:0}
+.lanes{min-width:0}.lane-head,.lanes li{display:grid;grid-template-columns:1fr minmax(24px,.32fr) 1fr;align-items:center}
+.lane-head b{font-size:12px;color:#acbebe;letter-spacing:.07em}.lane-head b:last-child{grid-column:3}
+.lanes ul{list-style:none;padding:0;margin:8px 0}.lanes li+li{margin-top:8px}
+.lanes li>div{padding:5px 12px;border-left:2px solid #769ba9;background:#222f35}
+.lanes li>div:last-child{border-color:#b2d48a;background:#27312c}
+.lanes small{display:block;color:#b6c5be;font-size:12px}.lanes strong{font-size:16px}
+.lanes i,.bus{display:block;border-top:1px solid #91ae90;position:relative}
+.lanes i:after,.bus:after{content:"";position:absolute;right:1px;top:-4px;border:solid #a8ce93;border-width:1px 1px 0 0;width:6px;height:6px;transform:rotate(45deg)}
+.bus{margin:16px 3px 0 0}.bus:before{content:"";position:absolute;right:65%;top:-58px;height:116px;width:35%;border:1px solid #7a9481;border-left:0}
+.estimator{border:1px solid #78935f;border-radius:6px;background:#28342c;padding:15px}
+.estimator strong{display:block;font:650 clamp(28px,3.3vw,48px)/1.25 ui-monospace,monospace;color:#d4efb3}
+.estimator p{font-size:15px}
+.flight-split{grid-template-columns:1.65fr 1fr}.flight-split figure{min-width:0;margin:0;padding:8px 12px}
+.flight-view{display:block;width:100%;height:auto;max-height:250px}.flight-view .trace{fill:none;stroke:#bee98c;stroke-width:2}.flight-view .datum{stroke:#a6ce85;fill:none;stroke-width:1.5;stroke-dasharray:5 4}
+.flight-split figcaption{margin:4px 2px}.flight-note{border-left:1px solid var(--edge);padding:clamp(14px,2.5vw,36px);align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.flight-note h2,.recap strong{font:700 clamp(24px,2.4vw,38px)/1.4 "PingFang TC",system-ui,sans-serif;margin:4px 0 9px}
+.flight-note b{color:#cbe6b3;font-size:15px}.flight-note p{font-size:15px}
+.recap{border:0}.recap a{padding-block:20px}
+#p11.v3 .rows{grid-template-columns:repeat(4,minmax(0,1fr))}
+.mobile-modes{display:none}
+@media(max-width:750px){
+ .atlas a,.recap a{padding:10px}.atlas nav span{font-size:12px}.atlas header{padding:10px 16px}.pair{gap:10px}
+ .flight-split{grid-template-columns:1fr}.flight-note{border:0;border-top:1px solid var(--edge);padding:10px 14px}.flight-note h2{margin:0 0 4px;font-size:23px}
+ .flight-view{max-height:205px}.sensor-list>div{padding:10px 13px}.sensor-list small{display:block}
+}
+@media(max-width:570px){
+ .fusion{grid-template-columns:1fr;padding:12px}.bus{width:0;height:20px;border:0;border-left:1px solid #91ae90;margin:0 auto}.bus:before{display:none}.bus:after{transform:rotate(135deg);right:-3px;top:auto;bottom:2px}
+ .estimator{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:0 16px;padding:8px 13px}.estimator small{grid-column:1}.estimator strong{grid-column:1;font-size:25px}.estimator p{grid-column:2;grid-row:1 / span 2}
+ .pair{grid-template-columns:1fr;gap:4px}.pair>span{display:none}.pair>div+span+div{border-top:1px solid var(--edge);padding-top:10px;margin-top:8px}.pair footer{border:0;padding:0;margin-top:4px}
+ #p01 .atlas nav{grid-template-columns:1fr}.atlas nav a{grid-template-columns:5em 1fr;gap:3px;align-items:center}.atlas nav span{grid-column:2}.atlas nav a+a{border:0;border-top:1px solid var(--edge)}
+ .recap{grid-template-columns:1fr}.recap a{grid-template-columns:6em 1fr auto;align-items:center;gap:3px}.recap a+a{border:0;border-top:1px solid var(--edge)}.recap strong{font-size:22px;margin:0}
+}
+@media(max-width:390px){
+ .mode-matrix{display:none}.mobile-modes{display:grid;padding:10px;gap:9px}
+ .mobile-modes section{border:1px solid var(--edge);border-radius:5px;overflow:hidden}
+ .mobile-modes h3{background:#24312d;color:var(--fg);margin:0;padding:7px 10px;font:650 17px/1.4 ui-monospace,monospace}
+ .mobile-modes h3 small{font:500 13px system-ui,sans-serif;color:#c1d5be}
+ .mobile-modes dl{margin:0}.mobile-modes dl div{display:grid;grid-template-columns:6.5em minmax(0,1fr);padding:4px 10px;font-size:14px}
+ .mobile-modes dt{color:#b0bfbd}.mobile-modes dd{margin:0}
+ .tech-panel[data-col="1"] [data-field="1"],.tech-panel[data-col="2"] [data-field="2"],.tech-panel[data-col="3"] [data-field="3"]{background:#344431;color:#d9f1be}
+}
+
+</style></head><body><div class="app"><aside aria-label="課程目錄"><p class="brand">無人機實驗室</p><p class="edition">UAV · 入門教學手冊</p><nav class="contents" aria-label="跳到指定頁"><a href="#p01"><span class="num">01</span><span>歡迎來到 UAV 實驗室</span></a>
+<a href="#p02"><span class="num">02</span><span>無人機系統分工</span></a>
+<a href="#p03"><span class="num">03</span><span>Pixhawk 6C 是什麼？</span></a>
+<a href="#p04"><span class="num">04</span><span>認識常見感測器</span></a>
+<a href="#p05"><span class="num">05</span><span>EKF 在做什麼？</span></a>
+<a href="#p06"><span class="num">06</span><span>為什麼有不同飛行模式？</span></a>
+<a href="#p07"><span class="num">07</span><span>Stabilize：姿態回正</span></a>
+<a href="#p08"><span class="num">08</span><span>AltHold：高度保持</span></a>
+<a href="#p09"><span class="num">09</span><span>Loiter：位置保持</span></a>
+<a href="#p10"><span class="num">10</span><span>Pre-Arm：解鎖前先檢查</span></a>
+<a href="#p11"><span class="num">11</span><span>三種模式回顧與下一步</span></a></nav></aside>
+<main class="stage"><div class="top"><span class="course">實驗室新人課程</span><select class="mobile" aria-label="投影片目錄"><option value="p01">01　歡迎來到 UAV 實驗室</option>
+<option value="p02">02　無人機系統分工</option>
+<option value="p03">03　Pixhawk 6C 是什麼？</option>
+<option value="p04">04　認識常見感測器</option>
+<option value="p05">05　EKF 在做什麼？</option>
+<option value="p06">06　為什麼有不同飛行模式？</option>
+<option value="p07">07　Stabilize：姿態回正</option>
+<option value="p08">08　AltHold：高度保持</option>
+<option value="p09">09　Loiter：位置保持</option>
+<option value="p10">10　Pre-Arm：解鎖前先檢查</option>
+<option value="p11">11　三種模式回顧與下一步</option></select><span class="chapter"></span><span class="counter" aria-live="polite"></span></div><div class="track" aria-hidden="true"><i></i></div>
+<section class="frame v3" id="p01" data-chapter="課程導讀" aria-labelledby="t01">
+<h1 id="t01" tabindex="-1">歡迎來到 UAV 實驗室</h1><p class="lead">第一次看無人機，可以先問三個問題。</p><div class="tech-panel"><div class="atlas"><header><div><small>UAV LAB / FIELD GUIDE</small><h2>課程地圖</h2></div><svg viewBox="0 0 300 130" aria-hidden="true"><g fill="none" stroke="#4d6157"><ellipse cx="150" cy="85" rx="109" ry="25"/><ellipse cx="150" cy="85" rx="72" ry="16"/><path d="M15 85h269M150 14v100" stroke-dasharray="2 5"/></g><g transform="translate(150 52) scale(1.3)"><g stroke-linejoin="round">
+  <!-- Same oblique front view and size for every flight mode. -->
+  <g stroke="#657b7c" stroke-width="7" fill="none"><path d="M-8 2 -31 -13 M8 2 31 -13 M-8 4 -48 13 M8 4 48 13"/></g>
+  <g stroke="#daece8" stroke-width="1.4" fill="#728a89"><ellipse cx="-31" cy="-18" rx="23" ry="3.2"/><ellipse cx="31" cy="-18" rx="23" ry="3.2"/><ellipse cx="-48" cy="8" rx="26" ry="3.6"/><ellipse cx="48" cy="8" rx="26" ry="3.6"/></g>
+  <g fill="#27383c" stroke="#bbd0c8"><path d="M-34 -16h6v6h-6z M28 -16h6v6h-6z M-52 9h8v8h-8z M44 9h8v8h-8z"/></g>
+  <path d="M-17 0 -7 -11 10 -11 20 0 13 10 -12 10z" fill="#6f8886" stroke="#cbdbd2"/>
+  <path d="M-17 0 -4 4 20 0 13 10 -12 10z" fill="#304044"/><path d="M-9 -5 7 -7 12 -2 -4 1z" fill="#c4ef8e"/>
+  <path d="m-10 10 -4 12h-10m34 -12 5 12h9" fill="none" stroke="#9cb3ad" stroke-width="3"/>
+</g>
+</g></svg></header><nav aria-label="課程章節"><a href="#p02"><small>第 02 頁起</small><strong>硬體與感測</strong><span>辨認飛控與估測來源 ↗</span></a><a href="#p06"><small>第 06 頁起</small><strong>三種飛行模式</strong><span>對照姿態、高度與位置 ↗</span></a><a href="#p10"><small>第 10 頁起</small><strong>解鎖前檢查</strong><span>用完整訊息查原因 ↗</span></a></nav></div></div><div class="rows"><div class="row"><h2>這是哪一塊板？</h2><p>從 Pixhawk 6C 開始，辨認 UAV（無人機）的飛行控制器硬體。</p></div><div class="row"><h2>飛控會幫我維持什麼？</h2><p>比較飛行模式，看機身傾斜、高度與水平位置各由誰控制。</p></div><div class="row"><h2>為什麼無法解鎖？</h2><p>讀懂 Pre-Arm（解鎖前檢查）訊息，找到對應的官方說明。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>這堂課的練習做到哪裡？</summary><p>練到能用文件解釋現象、指出要查哪個條件。實機能否飛行，還要對該機完成檢查。</p></details>
+<details class="refs"><summary>本頁證據　S01 · S03 · S07</summary><ul><li>先認識 Pixhawk 6C 飛控硬體。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/overview">S01.1 · Overview</a></li><li>本課比較不同模式交由飛控維持的量。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.1 · Overview</a></li><li>解鎖前檢查可攔下異常；課程以讀懂訊息為目標。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.3 · Warning</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.2 · Recognising which Pre-Arm Check has failed using the GCS</a></li></ul><p>適用範圍｜學習目標與讀表練習不代表實機已通過飛行驗證。</p></details></section>
+<section class="frame v3" id="p02" data-chapter="飛控與感測" aria-labelledby="t02" hidden>
+<h1 id="t02" tabindex="-1">無人機系統分工</h1><p class="lead">拿到飛控板時，先把板子和板上執行的程式分開辨認。</p><div class="tech-panel"><header class="panel-title"><b>先辨認硬體，再確認韌體</b><small>S01 · S02 · S03</small></header><div class="pair">
+    <div><small>HARDWARE</small><strong>Pixhawk 6C</strong><p>處理器、板載感測器與外接介面</p><footer>查 Holybro 硬體規格</footer></div>
+    <span aria-hidden="true">⇄</span><div><small>FIRMWARE</small><strong>飛控程式</strong><p>以目前安裝的韌體辨認模式行為</p><footer>使用 Copter 時查 ArduPilot 文件</footer></div></div></div><div class="rows"><div class="row"><h2>硬體｜Pixhawk 6C</h2><p>飛控板提供運算與周邊介面。查板上有哪些元件，從 Holybro 的硬體文件開始。</p></div><div class="row"><h2>韌體｜飛控程式</h2><p>Holybro 說明出廠預裝 PX4。若使用 ArduPilot 的 Copter（多旋翼飛控韌體），飛行模式的行為要查 Copter 文件。</p></div><div class="row"><h2>辨認手邊的機器</h2><p>板子上的型號能識別硬體。要判斷手上的機器會怎麼執行飛行模式，還要確認目前安裝的韌體。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>在板子上看到「Pixhawk 6C」，就能選定要讀哪套飛行模式文件嗎？</summary><p>還需要韌體名稱。硬體型號能帶你找到正確的板子規格，已安裝的韌體才決定要讀哪套模式說明。</p></details>
+<details class="refs"><summary>本頁證據　S01 · S02 · S03</summary><ul><li>Pixhawk 6C 是運算並連接周邊的飛控板。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/overview">S01.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">S02.3 · Interfaces</a>、<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/overview">S01.2 · Overview</a></li><li>PX4 是原廠預裝韌體；Copter 模式行為查 ArduPilot 文件。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/overview">S01.3 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.1 · Overview</a></li><li>出廠資料無法識別手邊飛控目前安裝的韌體。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/overview">S01.3 · Overview</a></li></ul><p>適用範圍｜硬體型號與韌體識別要分開。以兩份文件共同說明軟硬體分工。</p></details></section>
+<section class="frame v3" id="p03" data-chapter="飛控與感測" aria-labelledby="t03" hidden>
+<h1 id="t03" tabindex="-1">Pixhawk 6C 是什麼？</h1><p class="lead">讀一份硬體規格時，把「板上已有」與「可以外接」分成兩欄。</p><div class="tech-panel"><header class="panel-title"><b>板載與外接的邏輯架構</b><small>S01 · S02</small></header><div class="board-layout"><figure class="board-grid"><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="board-title board-desc" viewBox="0 0 550 285">
+<title id="board-title">Pixhawk 6C 板載功能邏輯分層</title>
+<desc id="board-desc">圖中將運算與感測畫成兩個概念層。綠色方塊代表處理器，藍灰色方塊代表板載感測器。位置與層數均為教學示意。</desc>
+<defs>
+ <linearGradient id="board-face" x2="1" y2="1"><stop stop-color="#58716c"/><stop offset=".48" stop-color="#394e4c"/><stop offset="1" stop-color="#233b39"/></linearGradient>
+ <linearGradient id="chip-face" x2="1" y2="1"><stop stop-color="#cee89d"/><stop offset=".52" stop-color="#90b363"/><stop offset="1" stop-color="#6e944a"/></linearGradient>
+ <pattern id="plane-grid" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M22 0H0V22" stroke="#8aafa3" fill="none" opacity=".18"/></pattern>
+ <g id="base-board">
+  <path d="M-105 -55H93L105 -43V47L94 58H-95L-105 46Z" fill="url(#board-face)" stroke="#a1b8a8" stroke-width="1.5"/>
+  <g fill="none" stroke="#89a98e" stroke-width="1.2"><path d="M-94 -32h31l12 13h44m-81-6h24l13 13h30m-13 43h19l13-12h33l12 12h30m-151 7h34l12-12h16m47-61h27l8 8h20m-38-2h8l11 11h19"/></g>
+  <g fill="#132b2e" stroke="#c3b584" stroke-width="2.5"><circle cx="-90" cy="-40" r="4"/><circle cx="87" cy="-34" r="4"/><circle cx="85" cy="43" r="4"/><circle cx="-84" cy="41" r="4"/></g>
+ </g>
+ <g id="small-chip"><rect x="-14" y="-10" width="28" height="20" rx="2" fill="#293839" stroke="#b3c4bf"/><path d="M-11-4h19m-19 5h10" stroke="#7f9591"/></g>
+</defs>
+<g fill="none" stroke="#819a91" opacity=".5" stroke-dasharray="3 5"><path d="M116 101v86m126-134v93m121-42v92m-123-41v89"/></g>
+<g transform="translate(245 196) matrix(1.05 -.43 .72 .44 0 0)"><use href="#base-board"/><path d="M-105 46l10 12H94l11-11v9l-11 11H-95l-10-12z" fill="#192b2a" stroke="#69897b"/><path d="M-88-21h34l9 10h34m17 45h29l16-15h34" fill="none" stroke="#b9a97c" stroke-width="2"/></g>
+<g transform="translate(245 144) matrix(1.05 -.43 .72 .44 0 0)"><use href="#base-board"/><path d="M-105 46l10 12H94l11-11v8l-11 11H-95l-10-12z" fill="#1b3533" stroke="#8fa99e"/><use href="#small-chip" x="-50" y="-13"/><use href="#small-chip" x="12" y="-22"/><use href="#small-chip" x="50" y="7"/><use href="#small-chip" x="-16" y="24"/></g>
+<g transform="translate(245 89) matrix(1.05 -.43 .72 .44 0 0)"><use href="#base-board"/><path d="M-105 46l10 12H94l11-11v8l-11 11H-95l-10-12z" fill="#203532" stroke="#809d86"/>
+<rect x="-39" y="-31" width="78" height="62" rx="3" fill="#506b47" stroke="#afcda1" stroke-dasharray="2 3" stroke-width="4"/><rect x="-32" y="-25" width="64" height="50" rx="2" fill="url(#chip-face)" stroke="#e0f3be"/><text x="0" y="5" text-anchor="middle" font-family="monospace" font-weight="bold" fill="#35492e" font-size="15">CPU</text></g>
+<g fill="none" stroke-width="1.5"><path d="M245 80l-45-42H51" stroke="#b7e78a"/><path d="M302 143l59-41h111" stroke="#c4d6d4"/></g>
+<g font-family="system-ui,sans-serif" font-weight="650" font-size="18"><text x="52" y="31" fill="#c1ed93">處理器</text><text x="383" y="95" fill="#d1e3df">板載感測器</text></g>
+<circle cx="245" cy="80" r="3.6" fill="#bfea8f"/><circle cx="302" cy="143" r="3.6" fill="#dce8df"/>
+</svg>
+<figcaption>功能分層示意 · 不表示實際接腳或元件位置</figcaption></figure><div class="parts"><div class="part-group"><h3>板載</h3><div><span class="part">處理器</span><span class="part">加速度計</span><span class="part">陀螺儀</span><span class="part">磁力計</span><span class="part">氣壓計</span></div></div><div class="part-group"><h3>外接介面</h3><div><span class="part">遙測埠</span><span class="part">GPS埠</span><span class="part">遙控輸入</span></div></div></div></div></div><div class="rows"><div class="row"><h2>板上已有</h2><p>處理器負責運算；規格也列出板載加速度計、陀螺儀、磁力計與氣壓計。</p></div><div class="row"><h2>可以外接</h2><p>遙測埠、GPS（全球定位系統）埠與遙控輸入，都是連接周邊的介面。</p></div><div class="row"><h2>先辨認版本</h2><p>Holybro 分列標準版與新版的慣性元件。查加速度計或陀螺儀型號時，要先讀對版本。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>規格寫有 GPS 埠，能據此判定這台飛機有定位嗎？</summary><p>這一欄只說明可以接 GPS。接收器是否已接上、是否提供有效定位，還要分別確認。</p></details>
+<details class="refs"><summary>本頁證據　S01 · S02</summary><ul><li>飛控板有處理器與內建感測器。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/overview">S01.2 · Overview</a>、<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">S02.1 · Processors &amp; Sensors</a></li><li>遙測、GPS 與遙控輸入是可供周邊連接的介面。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">S02.3 · Interfaces</a></li><li>加速度計／陀螺儀組合依硬體版本而異。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">S02.2 · On-board sensors</a></li></ul><p>適用範圍｜列有 GPS 介面不代表已接上接收器，也不保證定位可用。</p></details></section>
+<section class="frame v3" id="p04" data-chapter="飛控與感測" aria-labelledby="t04" hidden>
+<h1 id="t04" tabindex="-1">認識常見感測器</h1><p class="lead">先認出量測元件，再問估測器用哪一項資料。</p><div class="tech-panel"><header class="panel-title"><b>感測器與它提供的線索</b><small>S02 · S08</small></header><dl class="sensor-list"><div><dt><small>IMU</small>慣性量測單元</dt><dd>加速度計 ＋ 陀螺儀</dd></div><div><dt><small>MAG</small>磁力計</dt><dd>羅盤 → 航向估測</dd></div><div><dt><small>BARO</small>氣壓計</dt><dd>氣壓 → 高度估測</dd></div></dl></div><div class="rows"><div class="row"><h2>IMU（慣性量測單元）</h2><p>在 Pixhawk 6C 的規格裡，找加速度計與陀螺儀這一組。</p></div><div class="row"><h2>磁力計</h2><p>板上感測器包含磁力計。估算航向，也就是機頭朝向時，飛控的 EKF3（擴展卡爾曼濾波器）通常預設使用羅盤。</p></div><div class="row"><h2>氣壓計</h2><p>板上的氣壓計提供氣壓資訊。EKF3 預設用氣壓計估算垂直位置，也就是高度。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>看到板上有好幾種感測器，從哪裡查飛控如何使用它們？</summary><p>硬體規格能確認元件。要看哪一個來源提供高度或航向資訊，接著查 EKF3 的來源設定。</p></details>
+<details class="refs"><summary>本頁證據　S02 · S08</summary><ul><li>IMU 對應規格表中的加速度計與陀螺儀。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">S02.1 · Processors &amp; Sensors</a>、<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">S02.2 · On-board sensors</a></li><li>磁力計列在硬體規格；EKF3 通常以羅盤作為航向來源。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">S02.1 · Processors &amp; Sensors</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-ekf-sources.html">S08.4 · EKF Source Selection and Switching｜vertical position / yaw</a></li><li>板載有氣壓計，EKF3 預設用其作為垂直位置來源。　<a rel="noopener" target="_blank" href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">S02.1 · Processors &amp; Sensors</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-ekf-sources.html">S08.4 · EKF Source Selection and Switching｜vertical position / yaw</a></li></ul><p>適用範圍｜感測器存在、提供量測與估測器實際選用是不同層次。</p></details></section>
+<section class="frame v3" id="p05" data-chapter="飛控與感測" aria-labelledby="t05" hidden>
+<h1 id="t05" tabindex="-1">EKF 在做什麼？</h1><p class="lead">EKF（擴展卡爾曼濾波器）用量測更新對飛行狀態的估計。</p><div class="tech-panel"><header class="panel-title"><b>EKF3 的量測資料流</b><small>S08.1 · S08.3 · S08.4</small></header><div class="fusion">
+    <div class="lanes"><div class="lane-head"><b>量測來源</b><b>對應估測項目</b></div><ul><li><div><strong>氣壓計</strong><small>氣壓資料</small></div><i aria-hidden="true"></i><div><strong>垂直位置</strong><small>預設來源</small></div></li><li><div><strong>羅盤</strong><small>航向參考</small></div><i aria-hidden="true"></i><div><strong>航向</strong><small>通常預設</small></div></li><li><div><strong>光流</strong><small>水平速度資料</small></div><i aria-hidden="true"></i><div><strong>水平速度</strong><small>官方配置範例</small></div></li></ul></div>
+    <span class="bus" aria-hidden="true"></span>
+    <div class="estimator"><small>狀態估測</small><strong>EKF3</strong><p>依配置取用量測，更新飛行狀態。</p></div></div>
+    <p class="condition"><b>光流範例</b>　水平速度是輸入；該配置的水平位置是估出的相對位置。</p></div><div class="rows"><div class="row"><h2>要估哪個量？</h2><p>在 ArduPilot 的 EKF3 中，水平位置、水平速度、垂直位置與航向各有對應的來源設定。</p></div><div class="row"><h2>量測從哪裡來？</h2><p>以預設配置為例，垂直位置用氣壓計，航向通常用羅盤。同一台飛機可以依估測項目使用不同來源。</p></div><div class="row"><h2>怎麼讀光流範例？</h2><p>Optical Flow（光流）在官方範例中提供水平速度。這個配置估出的水平位置是相對位置。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>同學說「光流已經給飛控位置了」，你會先查哪個欄位？</summary><p>分開查看水平位置與水平速度的來源。官方光流例子把資料送進速度欄，不能直接把它當成絕對位置讀值。</p></details>
+<details class="refs"><summary>本頁證據　S08</summary><ul><li>EKF 依量測更新估測；位置、速度及航向可分別選來源。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-ekf-sources.html">S08.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-ekf-sources.html">S08.4 · EKF Source Selection and Switching｜vertical position / yaw</a></li><li>垂直位置預設用氣壓計，航向通常預設用羅盤。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-ekf-sources.html">S08.4 · EKF Source Selection and Switching｜vertical position / yaw</a></li><li>光流在官方例子提供水平速度，此時水平位置是相對的。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-ekf-sources.html">S08.3 · ExternalNAV/Optical Flow Transitions</a></li></ul><p>適用範圍｜保留來源配置語境，不宣稱任何感測器可保證絕對位置或精度。</p></details></section>
+<section class="frame v3" id="p06" data-chapter="飛行模式" aria-labelledby="t06" hidden>
+<h1 id="t06" tabindex="-1">為什麼有不同飛行模式？</h1><p class="lead">讀模式表時，依序看它管姿態、管高度，還是也管水平位置。</p><div class="tech-panel"><header class="panel-title"><b>三種模式的控制分工</b><small>S03 · S04 · S05 · S06</small></header><div class="focus-cols" aria-label="強調比較欄位"><span>強調欄位</span><button type="button" data-col="1" aria-pressed="false">姿態與水平桿</button><button type="button" data-col="2" aria-pressed="false">高度</button><button type="button" data-col="3" aria-pressed="false">水平位置</button></div><table class="mode-matrix" aria-label="姿態、高度與水平位置控制分工"><thead><tr><th scope="col">模式</th><th scope="col">姿態與水平桿</th><th scope="col">高度</th><th scope="col">水平位置</th></tr></thead><tbody><tr><th scope="row"><b>Stabilize</b><small>姿態穩定</small></th><td>桿回中時回平</td><td>飛手控制</td><td>飛手修正</td></tr><tr><th scope="row"><b>AltHold</b><small>高度保持</small></th><td>桿回中時回平</td><td>油門中立區定高</td><td>飛手修正</td></tr><tr><th scope="row"><b>Loiter</b><small>位置保持</small></th><td>水平桿調整位置</td><td>嘗試維持高度</td><td>嘗試定點¹</td></tr></tbody></table><div class="mobile-modes"><section><h3>Stabilize <small>姿態穩定</small></h3><dl><div data-field="1"><dt>姿態與水平桿</dt><dd>桿回中時回平</dd></div><div data-field="2"><dt>高度</dt><dd>飛手控制</dd></div><div data-field="3"><dt>水平位置</dt><dd>飛手修正</dd></div></dl></section><section><h3>AltHold <small>高度保持</small></h3><dl><div data-field="1"><dt>姿態與水平桿</dt><dd>桿回中時回平</dd></div><div data-field="2"><dt>高度</dt><dd>油門中立區定高</dd></div><div data-field="3"><dt>水平位置</dt><dd>飛手修正</dd></div></dl></section><section><h3>Loiter <small>位置保持</small></h3><dl><div data-field="1"><dt>姿態與水平桿</dt><dd>水平桿調整位置</dd></div><div data-field="2"><dt>高度</dt><dd>嘗試維持高度</dd></div><div data-field="3"><dt>水平位置</dt><dd>嘗試定點¹</dd></div></dl></section></div><p class="condition"><b>¹ 定點條件</b>　Loiter 需要有效的水平位置估測。</p></div><div class="rows"><div class="row"><h2>Stabilize（姿態穩定）</h2><p>橫滾與俯仰可回平，高度由飛手控制。</p></div><div class="row"><h2>AltHold（高度保持）</h2><p>飛控增加高度保持功能，這個模式不要求水平定位。</p></div><div class="row"><h2>Loiter（位置保持）</h2><p>飛控還會嘗試維持水平位置，因此需要有效的位置資訊。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>若只能取得高度資訊，能據此判定 Loiter 的定位條件已滿足嗎？</summary><p>還缺水平位置資訊。能估高度與能估水平位置，是模式表上的兩件事。</p></details>
+<details class="refs"><summary>本頁證據　S03 · S04 · S05 · S06</summary><ul><li>Stabilize 回平，高度仍由飛手控制。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.2 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/stabilize-mode.html">S04.1 · Overview</a></li><li>AltHold 增加定高，不要求水平位置。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.2 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/altholdmode.html">S05.1 · Overview</a></li><li>Loiter 嘗試維持水平位置，需要有效定位。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.2 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.3 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/loiter-mode.html">S06.1 · Overview</a></li></ul><p>適用範圍｜表內「不需要」僅指水平位置資訊。</p><p class="diagram-refs">讀圖依據｜姿態與水平桿見 S03 模式表、S04.1、S06.2。高度見 S04.1、S05.3、S06.1。水平位置見 S04.2、S05.1、S03.2、S06.1。可對讀第 07–09 頁的本頁證據。</p></details></section>
+<section class="frame v3" id="p07" data-chapter="飛行模式" aria-labelledby="t07" hidden>
+<h1 id="t07" tabindex="-1">Stabilize：姿態回正</h1><p class="lead">機身已經回平，為什麼飛機還可能飄走？</p><div class="tech-panel"><header class="panel-title"><b>同一架四旋翼｜姿態回平</b><small>S04.1 · S04.2</small></header><div class="flight-split"><figure><svg class="flight-view" viewBox="0 0 460 205" role="img" aria-label="Stabilize，飛控使機身回平，水平位置仍可能漂移。">
+    <g fill="none" stroke="#34454b" stroke-width=".85"><path d="M-20 147l-46 55"/><path d="M12 147l-46 55"/><path d="M44 147l-46 55"/><path d="M76 147l-46 55"/><path d="M108 147l-46 55"/><path d="M140 147l-46 55"/><path d="M172 147l-46 55"/><path d="M204 147l-46 55"/><path d="M236 147l-46 55"/><path d="M268 147l-46 55"/><path d="M300 147l-46 55"/><path d="M332 147l-46 55"/><path d="M364 147l-46 55"/><path d="M396 147l-46 55"/><path d="M428 147l-46 55"/><path d="M460 147l-46 55"/><path d="M492 147l-46 55"/><path d="M524 147l-46 55"/><path d="M0 149h460M0 158h460M0 171h460M0 189h460M0 202h460"/></g>
+    <g fill="none" stroke="#bfcfc5" stroke-width="1.7"><ellipse cx="146" cy="178" rx="18" ry="5"/><path d="M122 178h48m-24 -8v16"/></g>
+    <path class="trace" d="M215 95 Q235 112 255 98m-8 0 8 0 -2 7"/><path class="datum" d="M261 89h126"/><g opacity=".37" transform="translate(146 88) rotate(-17)"><g stroke-linejoin="round">
+  <!-- Same oblique front view and size for every flight mode. -->
+  <g stroke="#657b7c" stroke-width="7" fill="none"><path d="M-8 2 -31 -13 M8 2 31 -13 M-8 4 -48 13 M8 4 48 13"/></g>
+  <g stroke="#daece8" stroke-width="1.4" fill="#728a89"><ellipse cx="-31" cy="-18" rx="23" ry="3.2"/><ellipse cx="31" cy="-18" rx="23" ry="3.2"/><ellipse cx="-48" cy="8" rx="26" ry="3.6"/><ellipse cx="48" cy="8" rx="26" ry="3.6"/></g>
+  <g fill="#27383c" stroke="#bbd0c8"><path d="M-34 -16h6v6h-6z M28 -16h6v6h-6z M-52 9h8v8h-8z M44 9h8v8h-8z"/></g>
+  <path d="M-17 0 -7 -11 10 -11 20 0 13 10 -12 10z" fill="#6f8886" stroke="#cbdbd2"/>
+  <path d="M-17 0 -4 4 20 0 13 10 -12 10z" fill="#304044"/><path d="M-9 -5 7 -7 12 -2 -4 1z" fill="#c4ef8e"/>
+  <path d="m-10 10 -4 12h-10m34 -12 5 12h9" fill="none" stroke="#9cb3ad" stroke-width="3"/>
+</g>
+</g><g transform="translate(324 88)"><g stroke-linejoin="round">
+  <!-- Same oblique front view and size for every flight mode. -->
+  <g stroke="#657b7c" stroke-width="7" fill="none"><path d="M-8 2 -31 -13 M8 2 31 -13 M-8 4 -48 13 M8 4 48 13"/></g>
+  <g stroke="#daece8" stroke-width="1.4" fill="#728a89"><ellipse cx="-31" cy="-18" rx="23" ry="3.2"/><ellipse cx="31" cy="-18" rx="23" ry="3.2"/><ellipse cx="-48" cy="8" rx="26" ry="3.6"/><ellipse cx="48" cy="8" rx="26" ry="3.6"/></g>
+  <g fill="#27383c" stroke="#bbd0c8"><path d="M-34 -16h6v6h-6z M28 -16h6v6h-6z M-52 9h8v8h-8z M44 9h8v8h-8z"/></g>
+  <path d="M-17 0 -7 -11 10 -11 20 0 13 10 -12 10z" fill="#6f8886" stroke="#cbdbd2"/>
+  <path d="M-17 0 -4 4 20 0 13 10 -12 10z" fill="#304044"/><path d="M-9 -5 7 -7 12 -2 -4 1z" fill="#c4ef8e"/>
+  <path d="m-10 10 -4 12h-10m34 -12 5 12h9" fill="none" stroke="#9cb3ad" stroke-width="3"/>
+</g>
+</g></svg><figcaption>地面十字為共同參考點。淡色為傾斜姿態，亮色為回平後可能的位置。</figcaption></figure><div class="flight-note"><small>Stabilize</small><h2>姿態回平</h2><b>橫滾、俯仰桿回中</b><p>飛控使機身回平，水平位置仍可能漂移。</p></div></div></div><div class="rows"><div class="row"><h2>姿態｜飛控回平</h2><p>Roll（橫滾）與 Pitch（俯仰）搖桿回中後，飛控使機身回到水平姿態。</p></div><div class="row"><h2>高度｜飛手管理</h2><p>飛手仍須調整油門來維持高度。回平這個動作本身沒有接管定高。</p></div><div class="row"><h2>水平位置｜可能漂移</h2><p>風吹時，已回平的機身仍可能水平移動，飛手須修正位置。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>看見機身水平，能從這一點判斷它停在原地嗎？</summary><p>不能。機身水平描述的是姿態；是否停在原地要看水平位置有沒有改變。</p></details>
+<details class="refs"><summary>本頁證據　S04</summary><ul><li>橫滾與俯仰桿回中時，機身會自行回平。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/stabilize-mode.html">S04.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/stabilize-mode.html">S04.2 · Overview</a></li><li>飛手仍需調整油門來維持高度。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/stabilize-mode.html">S04.1 · Overview</a></li><li>有風時仍可能水平漂移，需要飛手修正。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/stabilize-mode.html">S04.2 · Overview</a></li></ul><p>適用範圍｜姿態、高度、水平位置要分別解讀。</p></details></section>
+<section class="frame v3" id="p08" data-chapter="飛行模式" aria-labelledby="t08" hidden>
+<h1 id="t08" tabindex="-1">AltHold：高度保持</h1><p class="lead">在 AltHold，油門桿表達的是想爬升、下降，或維持高度。</p><div class="tech-panel"><header class="panel-title"><b>同一架四旋翼｜高度保持</b><small>S05.1 · S05.3</small></header><div class="flight-split"><figure><svg class="flight-view" viewBox="0 0 460 205" role="img" aria-label="AltHold，飛控嘗試維持目前高度，水平位置仍由飛手修正。">
+    <g fill="none" stroke="#34454b" stroke-width=".85"><path d="M-20 147l-46 55"/><path d="M12 147l-46 55"/><path d="M44 147l-46 55"/><path d="M76 147l-46 55"/><path d="M108 147l-46 55"/><path d="M140 147l-46 55"/><path d="M172 147l-46 55"/><path d="M204 147l-46 55"/><path d="M236 147l-46 55"/><path d="M268 147l-46 55"/><path d="M300 147l-46 55"/><path d="M332 147l-46 55"/><path d="M364 147l-46 55"/><path d="M396 147l-46 55"/><path d="M428 147l-46 55"/><path d="M460 147l-46 55"/><path d="M492 147l-46 55"/><path d="M524 147l-46 55"/><path d="M0 149h460M0 158h460M0 171h460M0 189h460M0 202h460"/></g>
+    <g fill="none" stroke="#bfcfc5" stroke-width="1.7"><ellipse cx="146" cy="178" rx="18" ry="5"/><path d="M122 178h48m-24 -8v16"/></g>
+    <path class="datum" d="M42 88h382"/><path class="trace" d="M99 92v81m-6 -81h12m-12 81h12"/><g opacity=".37" transform="translate(146 88) rotate(0)"><g stroke-linejoin="round">
+  <!-- Same oblique front view and size for every flight mode. -->
+  <g stroke="#657b7c" stroke-width="7" fill="none"><path d="M-8 2 -31 -13 M8 2 31 -13 M-8 4 -48 13 M8 4 48 13"/></g>
+  <g stroke="#daece8" stroke-width="1.4" fill="#728a89"><ellipse cx="-31" cy="-18" rx="23" ry="3.2"/><ellipse cx="31" cy="-18" rx="23" ry="3.2"/><ellipse cx="-48" cy="8" rx="26" ry="3.6"/><ellipse cx="48" cy="8" rx="26" ry="3.6"/></g>
+  <g fill="#27383c" stroke="#bbd0c8"><path d="M-34 -16h6v6h-6z M28 -16h6v6h-6z M-52 9h8v8h-8z M44 9h8v8h-8z"/></g>
+  <path d="M-17 0 -7 -11 10 -11 20 0 13 10 -12 10z" fill="#6f8886" stroke="#cbdbd2"/>
+  <path d="M-17 0 -4 4 20 0 13 10 -12 10z" fill="#304044"/><path d="M-9 -5 7 -7 12 -2 -4 1z" fill="#c4ef8e"/>
+  <path d="m-10 10 -4 12h-10m34 -12 5 12h9" fill="none" stroke="#9cb3ad" stroke-width="3"/>
+</g>
+</g><g transform="translate(324 88)"><g stroke-linejoin="round">
+  <!-- Same oblique front view and size for every flight mode. -->
+  <g stroke="#657b7c" stroke-width="7" fill="none"><path d="M-8 2 -31 -13 M8 2 31 -13 M-8 4 -48 13 M8 4 48 13"/></g>
+  <g stroke="#daece8" stroke-width="1.4" fill="#728a89"><ellipse cx="-31" cy="-18" rx="23" ry="3.2"/><ellipse cx="31" cy="-18" rx="23" ry="3.2"/><ellipse cx="-48" cy="8" rx="26" ry="3.6"/><ellipse cx="48" cy="8" rx="26" ry="3.6"/></g>
+  <g fill="#27383c" stroke="#bbd0c8"><path d="M-34 -16h6v6h-6z M28 -16h6v6h-6z M-52 9h8v8h-8z M44 9h8v8h-8z"/></g>
+  <path d="M-17 0 -7 -11 10 -11 20 0 13 10 -12 10z" fill="#6f8886" stroke="#cbdbd2"/>
+  <path d="M-17 0 -4 4 20 0 13 10 -12 10z" fill="#304044"/><path d="M-9 -5 7 -7 12 -2 -4 1z" fill="#c4ef8e"/>
+  <path d="m-10 10 -4 12h-10m34 -12 5 12h9" fill="none" stroke="#9cb3ad" stroke-width="3"/>
+</g>
+</g></svg><figcaption>地面十字為共同參考點。水平虛線標示保持高度；兩架輪廓示意同機的不同位置。</figcaption></figure><div class="flight-note"><small>AltHold</small><h2>高度保持</h2><b>油門桿回到中立區</b><p>飛控嘗試維持目前高度，水平位置仍由飛手修正。</p></div></div></div><div class="rows"><div class="row"><h2>搖桿告訴飛控什麼？</h2><p>油門桿指定升降速度，回到中立區時，飛控嘗試維持目前高度。</p></div><div class="row"><h2>誰調節實際油門？</h2><p>飛控自動調節油門。它主要依氣壓估計高度，環境氣壓改變時，定高也可能受影響。</p></div><div class="row"><h2>還要照顧哪個方向？</h2><p>橫滾、俯仰與偏航仍由飛手操控。AltHold 沒有自動維持水平位置的功能。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>油門桿在中立區、高度穩定，機身卻往側邊移。這和 AltHold 的分工相符嗎？</summary><p>相符。這個模式接管高度保持，水平位置仍需要飛手照顧。</p></details>
+<details class="refs"><summary>本頁證據　S03 · S05</summary><ul><li>油門桿指定升降速度；中立區維持高度。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/altholdmode.html">S05.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/altholdmode.html">S05.3 · Controls</a></li><li>飛控自動調節油門，氣壓變化會影響定高。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/altholdmode.html">S05.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/altholdmode.html">S05.2 · Overview</a></li><li>飛手仍控制姿態，模式沒有自動水平定點。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/altholdmode.html">S05.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.2 · GPS Dependency</a></li></ul><p>適用範圍｜勿將氣壓高度當作精確離地高度，不承諾高度誤差範圍。</p></details></section>
+<section class="frame v3" id="p09" data-chapter="飛行模式" aria-labelledby="t09" hidden>
+<h1 id="t09" tabindex="-1">Loiter：位置保持</h1><p class="lead">討論無 GPS 定點時，先說明飛控從哪裡取得有效的位置估測。</p><div class="tech-panel"><header class="panel-title"><b>同一架四旋翼｜位置保持</b><small>S03.2 · S06.1–3 · S08.3</small></header><div class="flight-split"><figure><svg class="flight-view" viewBox="0 0 460 205" role="img" aria-label="Loiter，減速後嘗試維持水平位置。圖中十字標示這次的定點。">
+    <g fill="none" stroke="#34454b" stroke-width=".85"><path d="M-20 147l-46 55"/><path d="M12 147l-46 55"/><path d="M44 147l-46 55"/><path d="M76 147l-46 55"/><path d="M108 147l-46 55"/><path d="M140 147l-46 55"/><path d="M172 147l-46 55"/><path d="M204 147l-46 55"/><path d="M236 147l-46 55"/><path d="M268 147l-46 55"/><path d="M300 147l-46 55"/><path d="M332 147l-46 55"/><path d="M364 147l-46 55"/><path d="M396 147l-46 55"/><path d="M428 147l-46 55"/><path d="M460 147l-46 55"/><path d="M492 147l-46 55"/><path d="M524 147l-46 55"/><path d="M0 149h460M0 158h460M0 171h460M0 189h460M0 202h460"/></g>
+    <g fill="none" stroke="#bfcfc5" stroke-width="1.7"><ellipse cx="146" cy="178" rx="18" ry="5"/><path d="M122 178h48m-24 -8v16"/></g>
+    <path class="datum" d="M42 88h218M146 105v64"/><ellipse class="trace" cx="146" cy="178" rx="33" ry="8"/><g transform="translate(146 88)"><g stroke-linejoin="round">
+  <!-- Same oblique front view and size for every flight mode. -->
+  <g stroke="#657b7c" stroke-width="7" fill="none"><path d="M-8 2 -31 -13 M8 2 31 -13 M-8 4 -48 13 M8 4 48 13"/></g>
+  <g stroke="#daece8" stroke-width="1.4" fill="#728a89"><ellipse cx="-31" cy="-18" rx="23" ry="3.2"/><ellipse cx="31" cy="-18" rx="23" ry="3.2"/><ellipse cx="-48" cy="8" rx="26" ry="3.6"/><ellipse cx="48" cy="8" rx="26" ry="3.6"/></g>
+  <g fill="#27383c" stroke="#bbd0c8"><path d="M-34 -16h6v6h-6z M28 -16h6v6h-6z M-52 9h8v8h-8z M44 9h8v8h-8z"/></g>
+  <path d="M-17 0 -7 -11 10 -11 20 0 13 10 -12 10z" fill="#6f8886" stroke="#cbdbd2"/>
+  <path d="M-17 0 -4 4 20 0 13 10 -12 10z" fill="#304044"/><path d="M-9 -5 7 -7 12 -2 -4 1z" fill="#c4ef8e"/>
+  <path d="m-10 10 -4 12h-10m34 -12 5 12h9" fill="none" stroke="#9cb3ad" stroke-width="3"/>
+</g>
+</g></svg><figcaption>地面十字為共同參考點。垂直虛線連接機體與地面定點。</figcaption></figure><div class="flight-note"><small>Loiter</small><h2>位置保持</h2><b>位置估測有效、水平桿回中</b><p>減速後嘗試維持水平位置。圖中十字標示這次的定點。</p></div></div></div><div class="rows"><div class="row"><h2>模式要維持什麼？</h2><p>Loiter 嘗試維持位置、航向與高度。水平操控桿回中後，飛機會減速並嘗試定點。</p></div><div class="row"><h2>沒有 GPS 時要看什麼？</h2><p>GPS 是常見定位來源。官方的非 GPS 例子要求替代定位來源運作正常，並由地面站設定 EKF 原點（估測座標的基準）。</p></div><div class="row"><h2>光流在其中做什麼？</h2><p>光流可以提供水平速度。估測器的來源配置必須對應實際輸入，系統仍要能估出可用的水平位置。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>「已接上光流」這句話足以判斷室內能定點嗎？</summary><p>還要確認替代來源有效、估測器配置相符，並符合官方例子的原點條件。單憑已接上感測器無法判定。</p></details>
+<details class="refs"><summary>本頁證據　S03 · S06 · S08</summary><ul><li>水平桿回中會減速並嘗試保持位置，亦維持高度與航向。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/loiter-mode.html">S06.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/loiter-mode.html">S06.2 · Controls</a></li><li>需要有效位置估測。GPS 是常見來源；非 GPS 例子有有效替代來源與設定原點的條件。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.2 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.3 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/loiter-mode.html">S06.3 · Controls</a></li><li>光流可提供水平速度，仍需與估測配置相符。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-ekf-sources.html">S08.3 · ExternalNAV/Optical Flow Transitions</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/loiter-mode.html">S06.3 · Controls</a></li></ul><p>適用範圍｜未驗證任何實機；裝上光流或僅設好原點都不足以推論能定點。</p></details></section>
+<section class="frame v3" id="p10" data-chapter="安全與回顧" aria-labelledby="t10" hidden>
+<h1 id="t10" tabindex="-1">Pre-Arm：解鎖前先檢查</h1><p class="lead">先讀完整錯誤訊息，再決定要檢查哪個項目。</p><div class="tech-panel"><header class="panel-title"><b>從地面站訊息查對官方條目</b><small>S07</small></header><div class="error-sample"><span class="warn-icon" aria-hidden="true">!</span><div><small>官方文件範例 · 解鎖前檢查</small><code>3D Accel calibration needed</code></div></div><div class="lookup"><div><small>官方錯誤表　S07.4</small><b>查相同的完整訊息</b></div><span class="arrow" aria-hidden="true">→</span><div><small>對應原因</small><b>加速度計尚未完成校正</b></div></div></div><div class="rows"><div class="row"><h2>先辨認狀態</h2><p>Pre-Arm 會在發現校正、配置或感測器資料異常時阻止解鎖。</p></div><div class="row"><h2>讀地面站訊息</h2><p>例如「3D Accel calibration needed」。在官方錯誤表找到相同訊息，原因欄指出加速度計尚未完成校正。</p></div><div class="row"><h2>查原因並排除</h2><p>依對應條目處理，保留安全檢查並在飛行前排除問題。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>只記下「無法解鎖」，足以判斷是加速度計問題嗎？</summary><p>要保留地面站的完整訊息，再查錯誤表。加速度計校正是這個範例對應的原因。</p></details>
+<details class="refs"><summary>本頁證據　S07</summary><ul><li>校正、設定、感測器資料異常都可能阻止解鎖。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.1 · Overview</a></li><li>從地面站保留完整訊息，對照官方錯誤表；範例表示缺少加速度計校正。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.2 · Recognising which Pre-Arm Check has failed using the GCS</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.4 · Pre-Arm Failure Messages (All vehicle types)</a></li><li>飛行前排除原因，保留檢查。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.3 · Warning</a></li></ul><p>適用範圍｜範例是官方訊息，不是本專案實機日誌。</p></details></section>
+<section class="frame v3" id="p11" data-chapter="安全與回顧" aria-labelledby="t11" hidden>
+<h1 id="t11" tabindex="-1">三種模式回顧與下一步</h1><p class="lead">用同一個問題比較三種模式：操控桿回到相應中立位置後，飛控幫忙維持什麼？</p><div class="tech-panel"><header class="panel-title"><b>回看三種保持行為</b><small>S04 · S05 · S06</small></header><nav class="recap" aria-label="回看模式圖解"><a href="#p07"><small>Stabilize</small><strong>回平</strong><span>回看第 07 頁 ↗</span></a><a href="#p08"><small>AltHold</small><strong>定高</strong><span>回看第 08 頁 ↗</span></a><a href="#p09"><small>Loiter</small><strong>定點</strong><span>回看第 09 頁 ↗</span></a></nav></div><div class="rows"><div class="row"><h2>Stabilize</h2><p>橫滾、俯仰回平。高度與水平位置由飛手維持。</p></div><div class="row"><h2>AltHold</h2><p>油門桿在中立區時定高。水平位置仍由飛手維持。</p></div><div class="row"><h2>Loiter</h2><p>在定位有效時，水平桿回中後會減速並嘗試保持位置。</p></div><div class="row"><h2>遇到解鎖訊息時</h2><p>抄下地面站完整訊息，對照 Pre-Arm 官方錯誤表，先排除原因。</p></div></div>
+<details class="practice"><summary><span class="hint">自我檢核</span>要複查「能不能定點」與「為什麼無法解鎖」，分別翻哪裡？</summary><p>定點先看模式表和 Loiter 的定位條件。解鎖問題看地面站的完整訊息，再查 Pre-Arm 的對應條目。</p></details>
+<details class="refs"><summary>本頁證據　S03 · S04 · S05 · S06 · S07</summary><ul><li>Stabilize 回平，由飛手維持高度與水平位置。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.2 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/stabilize-mode.html">S04.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/stabilize-mode.html">S04.2 · Overview</a></li><li>AltHold 中立區定高，水平位置仍由飛手維持。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.2 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/altholdmode.html">S05.1 · Overview</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/altholdmode.html">S05.3 · Controls</a></li><li>Loiter 回中嘗試定點，前提是可靠的位置估測。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/flight-modes.html">S03.2 · GPS Dependency</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/loiter-mode.html">S06.1 · Overview</a></li><li>遇到解鎖被擋，先看地面站訊息，再查官方錯誤表。　<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.2 · Recognising which Pre-Arm Check has failed using the GCS</a>、<a rel="noopener" target="_blank" href="https://ardupilot.org/copter/docs/common-prearm-safety-checks.html">S07.3 · Warning</a></li></ul><p>適用範圍｜只比較指定三種模式的保持行為；安全檢查獨立判讀。</p></details></section>
+<nav class="nav" aria-label="換頁"><button id="prev" type="button">← 上一頁</button><small>← → 換頁　·　Home / End 首末頁</small><button id="next" type="button">下一頁 →</button></nav></main></div>
+<script>
+const frames=Array.from(document.querySelectorAll('.frame'));
+const links=Array.from(document.querySelectorAll('.contents a'));
+const select=document.querySelector('select');
+const prev=document.querySelector('#prev'),next=document.querySelector('#next');
+let active=0;
+function pageFromHash(){const n=frames.findIndex(f=>'#'+f.id===location.hash);return n<0?0:n}
+function show(focus=false){
+  active=pageFromHash();
+  document.body.classList.toggle("workshop",frames[active].classList.contains("v3"));
+  frames.forEach((f,i)=>{f.hidden=i!==active;links[i].setAttribute('aria-current',i===active?'page':'false')});
+  prev.disabled=active===0;next.disabled=active===frames.length-1;
+  select.selectedIndex=active;
+  document.querySelector('.counter').textContent=String(active+1).padStart(2,'0')+' / '+frames.length;
+  document.querySelector('.chapter').textContent=frames[active].dataset.chapter;
+  document.querySelector('.track i').style.width=((active+1)/frames.length*100)+'%';
+  if(focus){frames[active].querySelector('h1').focus({preventScroll:true});window.scrollTo(0,0)}
+}
+function go(i){
+ if(i<0||i>=frames.length||i===active)return;
+ location.hash=frames[i].id;
+ show(true);
+}
+prev.onclick=()=>go(active-1);next.onclick=()=>go(active+1);
+select.onchange=()=>go(select.selectedIndex);
+window.addEventListener('hashchange',()=>{if(pageFromHash()!==active)show(true)});
+document.addEventListener('keydown',e=>{
+ if(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey||e.target.closest('select,input,textarea'))return;
+ const targets={ArrowLeft:active-1,ArrowRight:active+1,Home:0,End:frames.length-1};
+ if(Object.hasOwn(targets,e.key)){e.preventDefault();go(targets[e.key])}
+});
+document.querySelectorAll('.focus-cols button').forEach(button=>{
+ button.addEventListener('click',()=>{
+   const panel=button.closest('.tech-panel'), selected=button.getAttribute('aria-pressed')!=='true';
+   panel.dataset.col=selected?button.dataset.col:'';
+   panel.querySelectorAll('.focus-cols button').forEach(b=>b.setAttribute('aria-pressed',String(selected&&b===button)));
+ });
+});
+show();
+</script></body></html>

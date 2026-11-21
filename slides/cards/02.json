@@ -1,0 +1,34 @@
+{
+  "page": "02",
+  "title": "無人機系統分工",
+  "claims": [
+    {
+      "id": "02a",
+      "wiki": "flight-stack",
+      "facts": [
+        "S01.1",
+        "S02.3",
+        "S01.2"
+      ],
+      "claim": "Pixhawk 6C 是運算並連接周邊的飛控板。"
+    },
+    {
+      "id": "02b",
+      "wiki": "flight-stack",
+      "facts": [
+        "S01.3",
+        "S03.1"
+      ],
+      "claim": "PX4 是原廠預裝韌體；Copter 模式行為查 ArduPilot 文件。"
+    },
+    {
+      "id": "02c",
+      "wiki": "flight-stack",
+      "facts": [
+        "S01.3"
+      ],
+      "claim": "出廠資料無法識別手邊飛控目前安裝的韌體。"
+    }
+  ],
+  "limit": "硬體型號與韌體識別要分開。以兩份文件共同說明軟硬體分工。"
+}

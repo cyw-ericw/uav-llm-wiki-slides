@@ -1,0 +1,22 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>S08｜UAV LLM Wiki</title><link rel="stylesheet" href="../../site.css"></head><body><header class="top"><nav class="top-inner"><strong>UAV LAB <span style="color:#83c72e">/ Wiki</span></strong><a href="../../index.html">首頁</a><a href="../../slides/deck.html">HTML 簡報</a><a href="../../wiki/index.html">Wiki</a><a href="../../workflow-view.html">Graph</a><a href="../../verification-view.html">執行反思</a></nav></header><main class="wrap"><div class="eyebrow">UAV LAB WIKI · WEEK 10</div><article class="md"><h1>S08｜Copter — EKF Source Selection and Switching</h1>
+<ul>
+<li>出版者：ArduPilot</li>
+<li>官方來源：<a href="https://ardupilot.org/copter/docs/common-ekf-sources.html">https://ardupilot.org/copter/docs/common-ekf-sources.html</a></li>
+<li>原始資料形式：官方文件重點摘錄（非全文）</li>
+<li>查核日期：2026-11-21</li>
+</ul>
+<h2>已整理的來源重點</h2>
+<ol>
+<li><strong>Overview：</strong> EKF3 的位置、速度、高度與航向資料來源可分別設定（例如 EK3_SRC1_POSXY、VELXY、POSZ、YAW）。</li>
+<li><strong>Source Switching：</strong> 可設定多組來源，在符合設定條件下切換位置估測輸入。</li>
+<li><strong>ExternalNAV/Optical Flow Transitions：</strong> 文件的來源切換範例把光流用作水平速度輸入，此時水平位置是相對的。</li>
+<li><strong>EKF Source Selection and Switching｜vertical position / yaw：</strong> EKF3 的垂直位置來源預設使用氣壓計，航向通常預設使用羅盤；可用來源依配置而異。</li>
+</ol>
+<h2>原頁對讀</h2>
+<p>開頭的 EKF3 水平／垂直與航向欄位；Source Switching；ExternalNAV/Optical Flow Transitions
+區分水平位置與水平速度；增加氣壓計及羅盤預設來源的段落依據。</p>
+<h2>相關主題</h2>
+<p>EKF、感測器融合、無 GPS</p>
+<h2>注意</h2>
+<p>已保存來源連結及中文摘要；如涉及特定參數、版本或實機行為，應回原始來源逐條核對。</p>
+</article><p class="small" style="margin-top:48px;border-top:1px solid #3c4840;padding-top:20px">公開閱讀版由 Markdown 產生，原始筆記與測試檔保留在專案中。官方來源為外部網站。</p></main></body></html>

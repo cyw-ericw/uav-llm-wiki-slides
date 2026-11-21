@@ -1,0 +1,32 @@
+{
+  "page": "07",
+  "title": "Stabilize：姿態回正",
+  "claims": [
+    {
+      "id": "07a",
+      "wiki": "flight-modes",
+      "facts": [
+        "S04.1",
+        "S04.2"
+      ],
+      "claim": "橫滾與俯仰桿回中時，機身會自行回平。"
+    },
+    {
+      "id": "07b",
+      "wiki": "flight-modes",
+      "facts": [
+        "S04.1"
+      ],
+      "claim": "飛手仍需調整油門來維持高度。"
+    },
+    {
+      "id": "07c",
+      "wiki": "flight-modes",
+      "facts": [
+        "S04.2"
+      ],
+      "claim": "有風時仍可能水平漂移，需要飛手修正。"
+    }
+  ],
+  "limit": "姿態、高度、水平位置要分別解讀。"
+}

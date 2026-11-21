@@ -1,0 +1,266 @@
+{
+  "schema": "uav-source-cards-v1",
+  "prepared_from": "第一階段中文摘要；本次逐一讀取八個官方頁面的相關段落後修訂，存放中文轉述。",
+  "access_date": "2026-11-21",
+  "sources": [
+    {
+      "id": "S01",
+      "slug": "pixhawk-6c-overview",
+      "publisher": "Holybro",
+      "title": "Pixhawk 6C — Overview",
+      "url": "https://docs.holybro.com/autopilot/pixhawk-6c/overview",
+      "focus": [
+        "硬體",
+        "飛控",
+        "架構"
+      ],
+      "facts": [
+        [
+          "Overview",
+          "Pixhawk 6C 是飛行控制器硬體平台，基於 FMUv6C 開放標準，而不是 ArduPilot 軟體本身。"
+        ],
+        [
+          "Overview",
+          "控制器採用 STM32H743 處理器，並配有多組慣性量測元件與隔振設計。"
+        ],
+        [
+          "Overview",
+          "Holybro 說明出廠預裝 PX4；若使用 ArduPilot 應另確認支援與安裝的韌體版本。"
+        ]
+      ],
+      "verification": {
+        "date": "2026-11-21",
+        "method": "開啟官方原頁並對讀本課相關段落",
+        "location": "Overview：首段、處理器、隔振",
+        "decision": "板型與出廠韌體分開記錄；未查特定實驗室機器。"
+      }
+    },
+    {
+      "id": "S02",
+      "slug": "pixhawk-6c-specs",
+      "publisher": "Holybro",
+      "title": "Pixhawk 6C — Technical Specification",
+      "url": "https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification",
+      "focus": [
+        "感測器",
+        "硬體"
+      ],
+      "facts": [
+        [
+          "Processors & Sensors",
+          "文件列有 STM32H743 主處理器，以及加速度計／陀螺儀、磁力計與氣壓計等內建感測器。"
+        ],
+        [
+          "On-board sensors",
+          "標準版列 ICM-42688-P 與 BMI088，新版列 DSK320X 與 BMI423。兩版在同一份規格內分列，讀取慣性元件型號時須先分辨版本。"
+        ],
+        [
+          "Interfaces",
+          "Interfaces 列出遙測序列埠、GPS（全球定位系統）埠及遙控接收器輸入等周邊介面。"
+        ]
+      ],
+      "verification": {
+        "date": "2026-11-21",
+        "method": "開啟官方原頁並對讀本課相關段落",
+        "location": "Processors & Sensors → On-board sensors；Interfaces",
+        "decision": "原卡未列新版組合。已分列兩版；簡報只教感測器種類。"
+      }
+    },
+    {
+      "id": "S03",
+      "slug": "ardupilot-flight-modes",
+      "publisher": "ArduPilot",
+      "title": "Copter — Flight Modes",
+      "url": "https://ardupilot.org/copter/docs/flight-modes.html",
+      "focus": [
+        "飛行模式",
+        "無 GPS"
+      ],
+      "facts": [
+        [
+          "Overview",
+          "不同 Copter 飛行模式提供不同程度的姿態、高度與水平位置控制。"
+        ],
+        [
+          "GPS Dependency",
+          "Stabilize 與 AltHold 並不要求有效水平位置資訊；Loiter 則需要可靠位置估測。"
+        ],
+        [
+          "GPS Dependency",
+          "位置資料通常由 GPS 提供，但在有適當設定時也可來自相機、定位信標等其他感測器。"
+        ]
+      ],
+      "verification": {
+        "date": "2026-11-21",
+        "method": "開啟官方原頁並對讀本課相關段落",
+        "location": "Overview 模式表與圖例；GPS Dependency 的兩份清單",
+        "decision": "讀取 Pos Sensor 欄與圖例；將「不要求」限定在水平定位。"
+      }
+    },
+    {
+      "id": "S04",
+      "slug": "stabilize",
+      "publisher": "ArduPilot",
+      "title": "Copter — Stabilize Mode",
+      "url": "https://ardupilot.org/copter/docs/stabilize-mode.html",
+      "focus": [
+        "Stabilize",
+        "手動控制"
+      ],
+      "facts": [
+        [
+          "Overview",
+          "Stabilize 對橫滾（Roll）與俯仰（Pitch）提供自動回正，操作者仍須控制油門與高度。"
+        ],
+        [
+          "Overview",
+          "橫滾與俯仰桿回中時機身會回平；有風時仍需飛手修正水平漂移。"
+        ],
+        [
+          "Warning",
+          "不需 GPS 才能使用 Stabilize，不代表其餘自動返航功能可在無定位下正常使用。"
+        ]
+      ],
+      "verification": {
+        "date": "2026-11-21",
+        "method": "開啟官方原頁並對讀本課相關段落",
+        "location": "Warning；Overview 的 roll/pitch、風及 throttle 條目",
+        "decision": "用回平、需修正風漂和油門高度分工解釋。"
+      }
+    },
+    {
+      "id": "S05",
+      "slug": "alt-hold",
+      "publisher": "ArduPilot",
+      "title": "Copter — Altitude Hold Mode",
+      "url": "https://ardupilot.org/copter/docs/altholdmode.html",
+      "focus": [
+        "AltHold",
+        "氣壓計"
+      ],
+      "facts": [
+        [
+          "Overview",
+          "AltHold 自動調整油門以維持高度，橫滾、俯仰和偏航的基本操控仍由飛手決定。"
+        ],
+        [
+          "Overview",
+          "氣壓計是高度量測的主要來源之一；氣壓環境變化可能影響高度維持。"
+        ],
+        [
+          "Controls",
+          "油門搖桿控制上升或下降速度，在中立區附近維持目前高度。"
+        ]
+      ],
+      "verification": {
+        "date": "2026-11-21",
+        "method": "開啟官方原頁並對讀本課相關段落",
+        "location": "Overview 與 Note；Controls 的中立區說明",
+        "decision": "保留油門中立區與環境氣壓兩個條件。"
+      }
+    },
+    {
+      "id": "S06",
+      "slug": "loiter",
+      "publisher": "ArduPilot",
+      "title": "Copter — Loiter Mode",
+      "url": "https://ardupilot.org/copter/docs/loiter-mode.html",
+      "focus": [
+        "Loiter",
+        "無 GPS",
+        "位置估測"
+      ],
+      "facts": [
+        [
+          "Overview",
+          "Loiter 嘗試維持位置、航向及高度；操作者放開操控後，飛行器會減速並保持位置。"
+        ],
+        [
+          "Controls",
+          "Loiter 可透過操控桿改變水平位置、高度與航向。"
+        ],
+        [
+          "Controls",
+          "使用有效的非 GPS 來源（例如光流）時，文件描述了經由地面站設定 EKF 原點的情況；定位來源仍須正常運作，配置須符合所用系統。"
+        ]
+      ],
+      "verification": {
+        "date": "2026-11-21",
+        "method": "開啟官方原頁並對讀本課相關段落",
+        "location": "Loiter Mode 開頭；Controls 的非 GPS 與原點段落",
+        "decision": "保留替代來源有效與 EKF 原點兩個條件；未將光流寫成絕對位置。"
+      }
+    },
+    {
+      "id": "S07",
+      "slug": "prearm",
+      "publisher": "ArduPilot",
+      "title": "Copter — Pre-Arm Safety Checks",
+      "url": "https://ardupilot.org/copter/docs/common-prearm-safety-checks.html",
+      "focus": [
+        "Pre-Arm",
+        "安全檢查"
+      ],
+      "facts": [
+        [
+          "Overview",
+          "Pre-Arm 檢查會在發現校正、配置或感測器資料異常時，阻止飛行器解鎖。"
+        ],
+        [
+          "Recognising which Pre-Arm Check has failed using the GCS",
+          "使用地面站可查看具體的 Pre-Arm 錯誤資訊，再依錯誤類型檢查。"
+        ],
+        [
+          "Warning",
+          "正式飛行前應排除錯誤，不以停用安全檢查作為一般排除方式。"
+        ],
+        [
+          "Pre-Arm Failure Messages (All vehicle types)",
+          "3D Accel calibration needed 對應加速度計尚未完成校正；表格分列訊息、原因與處理方式。"
+        ]
+      ],
+      "verification": {
+        "date": "2026-11-21",
+        "method": "開啟官方原頁並對讀本課相關段落",
+        "location": "Warning；Recognising which Pre-Arm Check has failed using the GCS；Pre-Arm Failure Messages",
+        "decision": "增加表中真實錯誤作為讀表練習。未引用停用設定。"
+      }
+    },
+    {
+      "id": "S08",
+      "slug": "ekf-sources",
+      "publisher": "ArduPilot",
+      "title": "Copter — EKF Source Selection and Switching",
+      "url": "https://ardupilot.org/copter/docs/common-ekf-sources.html",
+      "focus": [
+        "EKF",
+        "感測器融合",
+        "無 GPS"
+      ],
+      "facts": [
+        [
+          "Overview",
+          "EKF3 的位置、速度、高度與航向資料來源可分別設定（例如 EK3_SRC1_POSXY、VELXY、POSZ、YAW）。"
+        ],
+        [
+          "Source Switching",
+          "可設定多組來源，在符合設定條件下切換位置估測輸入。"
+        ],
+        [
+          "ExternalNAV/Optical Flow Transitions",
+          "文件的來源切換範例把光流用作水平速度輸入，此時水平位置是相對的。"
+        ],
+        [
+          "EKF Source Selection and Switching｜vertical position / yaw",
+          "EKF3 的垂直位置來源預設使用氣壓計，航向通常預設使用羅盤；可用來源依配置而異。"
+        ]
+      ],
+      "verification": {
+        "date": "2026-11-21",
+        "method": "開啟官方原頁並對讀本課相關段落",
+        "location": "開頭的 EKF3 水平／垂直與航向欄位；Source Switching；ExternalNAV/Optical Flow Transitions",
+        "decision": "區分水平位置與水平速度；增加氣壓計及羅盤預設來源的段落依據。"
+      }
+    }
+  ]
+}

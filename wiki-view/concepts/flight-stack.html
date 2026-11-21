@@ -1,0 +1,16 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>flight-stack｜UAV LLM Wiki</title><link rel="stylesheet" href="../../site.css"></head><body><header class="top"><nav class="top-inner"><strong>UAV LAB <span style="color:#83c72e">/ Wiki</span></strong><a href="../../index.html">首頁</a><a href="../../slides/deck.html">HTML 簡報</a><a href="../../wiki/index.html">Wiki</a><a href="../../workflow-view.html">Graph</a><a href="../../verification-view.html">執行反思</a></nav></header><main class="wrap"><div class="eyebrow">UAV LAB WIKI · WEEK 10</div><article class="md"><h1>飛行系統的角色分工</h1>
+<h2>核心概念</h2>
+<p><strong>Pixhawk（飛行控制器硬體）</strong>與 <strong>ArduPilot（飛控韌體）</strong>不是同一個東西。Pixhawk 提供運算與感測器介面，飛控韌體負責飛行控制邏輯。Holybro 表示 Pixhawk 6C 出廠預裝 PX4；是否改用 ArduPilot，需要看使用者安裝的韌體與硬體支援。</p>
+<p>規格表將內建感測器和周邊介面分列。遙測、GPS（全球定位系統）、遙控輸入都是介面例子。<a href="../sources/S02.html">S02</a> 飛行模式的行為請接著查 Copter 說明。<a href="../sources/S03.html">S03</a></p>
+<h2>初學者例子</h2>
+<p>就像電腦硬體與作業系統是不同層次；不能只看到 Pixhawk 名稱就推斷韌體必然是 PX4 或 ArduPilot。</p>
+<h2>常見誤解</h2>
+<p>「Pixhawk 就是 ArduPilot」是不正確的等號。</p>
+<h2>來源與連結</h2>
+<ul>
+<li><a href="../sources/S01.html">S01</a>｜<a href="https://docs.holybro.com/autopilot/pixhawk-6c/overview">Holybro Overview</a></li>
+<li><a href="../sources/S02.html">S02</a>｜<a href="https://docs.holybro.com/autopilot/pixhawk-6c/technical-specification">Holybro Technical Specification</a></li>
+<li><a href="../sources/S03.html">S03</a>｜<a href="https://ardupilot.org/copter/docs/flight-modes.html">Copter Flight Modes</a></li>
+<li>相關：<a href="sensors-and-ekf.html">sensors-and-ekf</a></li>
+</ul>
+</article><p class="small" style="margin-top:48px;border-top:1px solid #3c4840;padding-top:20px">公開閱讀版由 Markdown 產生，原始筆記與測試檔保留在專案中。官方來源為外部網站。</p></main></body></html>

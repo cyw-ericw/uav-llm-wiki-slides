@@ -1,0 +1,5 @@
+{
+  "status": "PASS",
+  "review": "checks/faithfulness-round2.md",
+  "reviewed_sha256": "5097a2bbd7ab59fb975c9ac1e76b83a9507e39dfb17d8ccc7a8004fa6769b7e0"
+}
